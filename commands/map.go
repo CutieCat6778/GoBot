@@ -84,12 +84,20 @@ func init() {
 func Map(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
 	options := i.ApplicationCommandData().Options
 
-	_, allow := database.RemoveToken(i.Member.User.ID)
+	m, allow := database.RemoveToken(i.Member.User.ID)
 	if !allow {
-		err := s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("The zoom values can only be from 1-19!", nil, nil))
-		if err != nil {
-			utils.SendErrorMessage("Problem while trying to send private interaction message: ", err.Error())
-			log.Fatal(err)
+		if len(m.MemberID) < 5 {
+			err := s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("Failed to remove user token!", nil, nil))
+			if err != nil {
+				utils.SendErrorMessage("Problem while trying to send private interaction message: ", err.Error())
+				log.Fatal(err)
+			}
+		} else {
+			err := s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("Your user token is expired, please wait 24h to refresh!", nil, nil))
+			if err != nil {
+				utils.SendErrorMessage("Problem while trying to send private interaction message: ", err.Error())
+				log.Fatal(err)
+			}
 		}
 	}
 
