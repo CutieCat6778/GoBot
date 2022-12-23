@@ -44,14 +44,10 @@ func FindByID(id string) (class.Guilds, bool) {
 func CreateGuild(id string) string {
 	guild := class.NewGuild(id)
 
-	log.Println(guild)
-
 	res, err := Guilds.InsertOne(context.TODO(), guild)
 	if err != nil {
 		log.Fatal("Problem while trying to write datas: ", err)
 	}
-
-	log.Println(res, res.InsertedID.(primitive.ObjectID).String())
 
 	return res.InsertedID.(primitive.ObjectID).String()
 }

@@ -4,7 +4,6 @@ import (
 	"cutiecat6778/discordbot/commands"
 	"cutiecat6778/discordbot/database"
 	"cutiecat6778/discordbot/utils"
-	"log"
 	"time"
 
 	"github.com/bwmarrin/discordgo"
@@ -15,7 +14,6 @@ func InteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	g, f := database.FindByServerID(i.GuildID)
 	if !f {
 		id := database.CreateGuild(i.GuildID)
-		log.Println(id)
 		g, _ = database.FindByID(id)
 	}
 	if h, ok := slashHandlers[i.ApplicationCommandData().Name]; ok {
@@ -23,7 +21,6 @@ func InteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		current_time := time.Now().Unix()
 		r, f := Ratelimit.Get(i.Member.User.ID)
 		if !f {
-			log.Println("Not found!")
 			Ratelimit.Register(i.Member.User.ID)
 			r, f = Ratelimit.Get(i.Member.User.ID)
 		}

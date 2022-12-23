@@ -34,9 +34,6 @@ func NewMap() Map {
 
 func (handler Map) Get(lat float64, long float64, zoom int64, maptype string) *bytes.Reader {
 	url := fmt.Sprintf(MapURL, lat, long, zoom, maptype)
-
-	log.Println(url)
-
 	resp, err := handler.HttpClient.Get(url)
 	if err != nil {
 		log.Fatal("Failed to fetch: ", err)
