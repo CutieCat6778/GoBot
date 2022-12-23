@@ -4,6 +4,7 @@ import (
 	"cutiecat6778/discordbot/commands"
 	"cutiecat6778/discordbot/database"
 	"cutiecat6778/discordbot/utils"
+	"fmt"
 	"time"
 
 	"github.com/bwmarrin/discordgo"
@@ -11,11 +12,12 @@ import (
 
 func InteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	slashHandlers := commands.SlashHandlers()
-	g, f := database.FindByServerID(i.GuildID)
+	g, f := database.FindServerByServerID(i.GuildID)
 	if !f {
 		id := database.CreateGuild(i.GuildID)
-		g, _ = database.FindByID(id)
+		g, _ = database.FindServerByID(id)
 	}
+
 	if h, ok := slashHandlers[i.ApplicationCommandData().Name]; ok {
 		// Ratelimit
 		current_time := time.Now().Unix()
@@ -26,11 +28,11 @@ func InteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		}
 		time := r.GetTime()
 
-		if current_time-time <= h.Data.Ratelimit && f {
+		if current_time-time >= h.Data.Ratelimit && f {
 			// Execute command
 			h.Execute(s, i, g)
 		} else {
-			s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("Please slow down, don't use this command to fast!", nil, nil))
+			s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("Please slow down, don't use this command to fast! Please wait "+fmt.Sprint((current_time-time)-h.Data.Ratelimit)+" seconds", nil, nil))
 			return
 		}
 	}

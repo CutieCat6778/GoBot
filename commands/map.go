@@ -2,6 +2,7 @@ package commands
 
 import (
 	"cutiecat6778/discordbot/class"
+	"cutiecat6778/discordbot/database"
 	"cutiecat6778/discordbot/utils"
 	"log"
 
@@ -75,13 +76,22 @@ func init() {
 
 	MapCommandData = class.CommandData{
 		Permissions: defaultPerms,
-		Ratelimit:   0,
+		Ratelimit:   5000,
 		BotPerms:    defaultPerms,
 	}
 }
 
 func Map(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
 	options := i.ApplicationCommandData().Options
+
+	_, allow := database.RemoveToken(i.Member.User.ID)
+	if !allow {
+		err := s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("The zoom values can only be from 1-19!", nil, nil))
+		if err != nil {
+			utils.SendErrorMessage("Problem while trying to send private interaction message: ", err.Error())
+			log.Fatal(err)
+		}
+	}
 
 	optionMap := make(map[string]*discordgo.ApplicationCommandInteractionDataOption, len(options))
 	for _, opt := range options {
@@ -111,6 +121,7 @@ func Map(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
 		if err != nil {
 			log.Fatal(err)
 		}
+		return
 	}
 
 	reader := Api.GetAdress(margs.Address, margs.Zoom, margs.Type)

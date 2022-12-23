@@ -11,7 +11,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func FindByServerID(id string) (class.Guilds, bool) {
+func FindServerByServerID(id string) (class.Guilds, bool) {
 	var result class.Guilds
 
 	err := Guilds.FindOne(context.TODO(), bson.D{{Key: "server_id", Value: id}}).Decode(&result)
@@ -19,14 +19,14 @@ func FindByServerID(id string) (class.Guilds, bool) {
 		return class.Guilds{ServerID: "", CreatedAt: 0}, false
 	}
 	if err != nil {
+		utils.SendErrorMessage("Failed to fetch guild! ", err.Error())
 		log.Fatal("Problem while trying to fetch data: ", err)
-		panic(err)
 	}
 
 	return class.Guilds{ServerID: result.ServerID, CreatedAt: result.CreatedAt}, true
 }
 
-func FindByID(id string) (class.Guilds, bool) {
+func FindServerByID(id string) (class.Guilds, bool) {
 	var result class.Guilds
 
 	err := Guilds.FindOne(context.TODO(), bson.D{{Key: "_id", Value: id}}).Decode(&result)
@@ -34,8 +34,8 @@ func FindByID(id string) (class.Guilds, bool) {
 		return class.Guilds{ServerID: "", CreatedAt: 0}, false
 	}
 	if err != nil {
+		utils.SendErrorMessage("Failed to fetch guild! ", err.Error())
 		log.Fatal("Problem while trying to fetch data: ", err)
-		panic(err)
 	}
 
 	return class.Guilds{ServerID: result.ServerID, CreatedAt: result.CreatedAt}, true
@@ -54,7 +54,7 @@ func CreateGuild(id string) string {
 
 func UpdateGuild(id string, update *class.Guilds) bool {
 
-	filter := bson.D{{Key: "ServerID", Value: id}}
+	filter := bson.D{{Key: "server_id", Value: id}}
 
 	_, err := Guilds.UpdateOne(context.TODO(), filter, update)
 	if err != nil {

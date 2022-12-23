@@ -25,6 +25,7 @@ func init() {
 
 func main() {
 	s.Identify.Intents = discordgo.IntentGuilds
+	s.Identify.Intents = discordgo.IntentGuildMembers
 
 	s.AddHandler(events.InteractionCreate)
 	s.AddHandler(events.Ready)
