@@ -3,9 +3,8 @@ package main
 import (
 	"cutiecat6778/discordbot/class"
 	"cutiecat6778/discordbot/commands"
-	"cutiecat6778/discordbot/database"
+	"cutiecat6778/discordbot/events"
 	"cutiecat6778/discordbot/utils"
-	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -24,30 +23,11 @@ func init() {
 	}
 }
 
-func init() {
-
-	slashHandlers := commands.SlashHandlers()
-
-	s.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
-		g, f := database.FindByServerID(i.GuildID)
-		if !f {
-			id := database.CreateGuild(i.GuildID)
-			log.Println(id)
-			g, _ = database.FindByID(id)
-		}
-		if h, ok := slashHandlers[i.ApplicationCommandData().Name]; ok {
-			h(s, i, g)
-		}
-	})
-}
-
 func main() {
 	s.Identify.Intents = discordgo.IntentGuilds
 
-	s.AddHandler(func(s *discordgo.Session, r *discordgo.Ready) {
-		utils.SendLogMessage("The bot is running!")
-		log.Printf("Logged in as: %v#%v", s.State.User.Username, s.State.User.Discriminator)
-	})
+	s.AddHandler(events.InteractionCreate)
+	s.AddHandler(events.Ready)
 
 	err := s.Open()
 
@@ -71,7 +51,7 @@ func main() {
 		registeredCommands[i] = cmd
 	}
 
-	fmt.Println("Bot is running right now!")
+	log.Println("Bot is running right now!")
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-sc

@@ -16,8 +16,16 @@ var (
 	HookToken      string
 	HookURL        string
 	DBKey          string
+	GGAPIKey       string
+	BINGKey        string
 	RemoveCommands = flag.Bool("rmcmd", true, "Remove all commands after shutdowning or not")
 )
+
+type CommandData struct {
+	Permissions int64
+	Ratelimit   int64
+	BotPerms    int64
+}
 
 func init() {
 
@@ -35,6 +43,8 @@ func init() {
 	hookToken := os.Getenv("HOOKID")
 	hookUrl := os.Getenv("HOOKURL")
 	hookId := os.Getenv("HOOKTOKEN")
+	ggApi := os.Getenv("GGAPITOKEN")
+	bingApi := os.Getenv("BINGTOKEN")
 
 	flag.StringVar(&Token, "t", token, "Bot's token")
 	flag.StringVar(&ServerID, "s", serverID, "Server's id")
@@ -43,6 +53,8 @@ func init() {
 	flag.StringVar(&HookID, "ht", hookToken, "")
 	flag.StringVar(&HookToken, "hi", hookId, "")
 	flag.StringVar(&HookURL, "hu", hookUrl, "")
+	flag.StringVar(&GGAPIKey, "ga", ggApi, "")
+	flag.StringVar(&BINGKey, "ba", bingApi, "")
 
 	flag.Parse()
 

@@ -3,7 +3,6 @@ package commands
 import (
 	"cutiecat6778/discordbot/class"
 	"cutiecat6778/discordbot/utils"
-	"fmt"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -13,11 +12,22 @@ var (
 		Name:        "ping",
 		Description: "It will pong you back :)",
 	}
+	PingCommandData class.CommandData
 )
 
+func init() {
+
+	var (
+		defaultPerms int64 = discordgo.PermissionSendMessages
+	)
+
+	PingCommandData = class.CommandData{
+		Permissions: defaultPerms,
+		Ratelimit:   0,
+		BotPerms:    defaultPerms,
+	}
+}
+
 func Ping(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
-
-	fmt.Println(g.ServerID)
-
 	s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("Pong!", nil, nil))
 }

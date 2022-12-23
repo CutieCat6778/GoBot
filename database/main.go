@@ -21,6 +21,10 @@ func init() {
 
 	Guilds = client.Database("gobot").Collection("guild")
 
+	err = client.Ping(context.TODO(), nil)
+	if err != nil {
+		log.Fatal("Failed to connect to the database: ", err)
+	}
 	// defer func() {
 	// 	if err := client.Disconnect(context.TODO()); err != nil {
 	// 		log.Fatal("Error while trying to disconnect to the database: ", err)

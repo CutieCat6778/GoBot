@@ -49,6 +49,6 @@ func (handler Ratelimit) Register(id string) {
 	}
 }
 
-func (ratelimit RatelimitStruct) GetTime() int {
-	return int(ratelimit.last)
+func (ratelimit RatelimitStruct) GetTime() int64 {
+	return ratelimit.last
 }
