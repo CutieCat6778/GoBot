@@ -1,49 +1,101 @@
-{
-  "coord": {
-    "lon": 10.99,
-    "lat": 44.34
+[
+  {
+    "coord": {
+      "lon": 10.99,
+      "lat": 44.34
+    },
+    "weather": [
+      {
+        "id": 501,
+        "main": "Rain",
+        "description": "moderate rain",
+        "icon": "10d"
+      }
+    ],
+    "base": "stations",
+    "main": {
+      "temp": 298.48,
+      "feels_like": 298.74,
+      "temp_min": 297.56,
+      "temp_max": 300.05,
+      "pressure": 1015,
+      "humidity": 64,
+      "sea_level": 1015,
+      "grnd_level": 933
+    },
+    "visibility": 10000,
+    "wind": {
+      "speed": 0.62,
+      "deg": 349,
+      "gust": 1.18
+    },
+    "rain": {
+      "1h": 3.16
+    },
+    "clouds": {
+      "all": 100
+    },
+    "dt": 1661870592,
+    "sys": {
+      "type": 2,
+      "id": 2075663,
+      "country": "IT",
+      "sunrise": 1661834187,
+      "sunset": 1661882248
+    },
+    "timezone": 7200,
+    "id": 3163858,
+    "name": "Zocca",
+    "cod": 200
   },
-  "weather": [
-    {
-      "id": 501,
-      "main": "Rain",
-      "description": "moderate rain",
-      "icon": "10d"
-    }
-  ],
-  "base": "stations",
-  "main": {
-    "temp": 298.48,
-    "feels_like": 298.74,
-    "temp_min": 297.56,
-    "temp_max": 300.05,
-    "pressure": 1015,
-    "humidity": 64,
-    "sea_level": 1015,
-    "grnd_level": 933
-  },
-  "visibility": 10000,
-  "wind": {
-    "speed": 0.62,
-    "deg": 349,
-    "gust": 1.18
-  },
-  "rain": {
-    "1h": 3.16
-  },
-  "clouds": {
-    "all": 100
-  },
-  "dt": 1661870592,
-  "sys": {
-    "type": 2,
-    "id": 2075663,
-    "country": "IT",
-    "sunrise": 1661834187,
-    "sunset": 1661882248
-  },
-  "timezone": 7200,
-  "id": 3163858,
-  "name": "Zocca",
-  "cod": 200
-}
+  {
+    "authenticationResultCode": "ValidCredentials",
+    "brandLogoUri": "http://dev.virtualearth.net/Branding/logo_powered_by.png",
+    "copyright": "Copyright © 2022 Microsoft and its suppliers. All rights reserved. This API cannot be accessed and the content and any results may not be used, reproduced or transmitted in any manner without express written permission from Microsoft Corporation.",
+    "resourceSets": [
+      {
+        "estimatedTotal": 1,
+        "resources": [
+          {
+            "__type": "Location:http://schemas.microsoft.com/search/local/ws/rest/v1",
+            "bbox": [
+              48.053995282429327, 8.4502449444014847, 48.06172071757068,
+              8.4656550555985159
+            ],
+            "name": "Rietgasse 13, 78050 Villingen, Germany",
+            "point": { "type": "Point", "coordinates": [48.057858, 8.45795] },
+            "address": {
+              "addressLine": "Rietgasse 13",
+              "adminDistrict": "Baden-Württemberg",
+              "adminDistrict2": "Schwarzwald-Baar-Kreis",
+              "countryRegion": "Germany",
+              "formattedAddress": "Rietgasse 13, 78050 Villingen, Germany",
+              "locality": "Villingen",
+              "postalCode": "78050"
+            },
+            "confidence": "Medium",
+            "entityType": "Address",
+            "geocodePoints": [
+              {
+                "type": "Point",
+                "coordinates": [48.057858, 8.45795],
+                "calculationMethod": "Rooftop",
+                "usageTypes": ["Display"]
+              },
+              {
+                "type": "Point",
+                "coordinates": [48.0578484, 8.4578857],
+                "calculationMethod": "Rooftop",
+                "usageTypes": ["Route"]
+              }
+            ],
+            "matchCodes": ["Good"]
+          }
+        ]
+      }
+    ],
+    "statusCode": 200,
+    "statusDescription": "OK",
+    "traceId": "ba9cc07d6d0f4dbf868648d14b141163|DU00002786|0.0.0.1|Ref A: C7EE727A7E5042B9899B59BC74945E43 Ref B: DB3EDGE3116 Ref C: 2022-12-24T11:57:23Z"
+  }
+]

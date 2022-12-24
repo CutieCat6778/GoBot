@@ -70,7 +70,7 @@ func init() {
 }
 
 func CurrentWeather(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
-	options := i.ApplicationCommandData().Options
+	options := i.ApplicationCommandData().Options[0].Options
 
 	m, allow := database.RemoveToken(i.Member.User.ID)
 	if !allow {
@@ -109,6 +109,14 @@ func CurrentWeather(s *discordgo.Session, i *discordgo.InteractionCreate, g clas
 	}
 
 	address := MapApi.GetAddress(margs.Address)
+	if len(address.ResourceSets) == 0 || address.ResourceSets[0].EstimatedTotal < 1 {
+		err := s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("Address not found!", nil, nil))
+		if err != nil {
+			utils.SendErrorMessage("Problem while trying to send private interaction message: ", err.Error())
+			log.Fatal(err)
+		}
+		return
+	}
 	point := address.ResourceSets[0].Resources[0].Point.Coordinates
 	data := WeatherClass.GetCurrentWeather(point[0], point[1], margs.Units)
 	addressData := address.ResourceSets[0].Resources[0].Address
@@ -132,13 +140,13 @@ func CurrentWeather(s *discordgo.Session, i *discordgo.InteractionCreate, g clas
 		},
 	}
 	if margs.Private {
-		err := s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("Loading...", res, nil))
+		err := s.InteractionRespond(i.Interaction, utils.SendPrivateEmbed(res, nil))
 
 		if err != nil {
 			log.Fatal(err)
 		}
 	} else {
-		err := s.InteractionRespond(i.Interaction, utils.SendInteractionMessage("Loading...", res, nil))
+		err := s.InteractionRespond(i.Interaction, utils.SendEmbed(res, nil))
 
 		if err != nil {
 			log.Fatal(err)

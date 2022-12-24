@@ -63,6 +63,8 @@ func (handler Map) GetAddress(query string) BingRes {
 
 	defer resp.Body.Close()
 
+	log.Println(url)
+
 	res := BingRes{}
 
 	err = json.Unmarshal(body, &res)
