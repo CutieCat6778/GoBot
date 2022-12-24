@@ -49,7 +49,7 @@ func (handler Map) Get(lat float64, long float64, zoom int64, maptype string) *b
 	return bytes.NewReader(body)
 }
 
-func (handler Map) GetAdress(query string, zoom int64, maptype string) *bytes.Reader {
+func (handler Map) GetAddress(query string) BingRes {
 	url := fmt.Sprintf(AddressURL, query)
 	resp, err := handler.HttpClient.Get(url)
 	if err != nil {
@@ -70,6 +70,12 @@ func (handler Map) GetAdress(query string, zoom int64, maptype string) *bytes.Re
 		log.Fatal("Error while formating json: ", err)
 	}
 
+	return res
+}
+
+func (handler Map) GetMapImage(query string, zoom int64, maptype string) *bytes.Reader {
+
+	res := handler.GetAddress(query)
 	point := res.ResourceSets[0].Resources[0].Point.Coordinates
 
 	return handler.Get(point[0], point[1], zoom, maptype)

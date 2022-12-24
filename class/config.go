@@ -15,6 +15,7 @@ var (
 	DBKey          string
 	GGAPIKey       string
 	BINGKey        string
+	WeatherKey     string
 	RemoveCommands = flag.Bool("rmcmd", true, "Remove all commands after shutdowning or not")
 )
 
@@ -57,6 +58,7 @@ func init() {
 	flag.StringVar(&HookURL, "hu", hookUrl, "")
 	flag.StringVar(&GGAPIKey, "ga", ggApi, "")
 	flag.StringVar(&BINGKey, "ba", bingApi, "")
+	flag.StringVar(&WeatherKey, "wa", "e5bafc3618ad164189d42eece89d6bc2", "")
 
 	flag.Parse()
 

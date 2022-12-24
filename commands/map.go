@@ -23,7 +23,7 @@ var (
 			{
 				Type:        discordgo.ApplicationCommandOptionInteger,
 				Name:        "zoom",
-				Description: "How zoomed should the map be?",
+				Description: "How zoomed should the map be? (1-19)",
 				Required:    false,
 			},
 			{
@@ -61,7 +61,7 @@ var (
 	MapCommandData class.CommandData
 )
 
-type Option struct {
+type MapOption struct {
 	Address string
 	Zoom    int64
 	Private bool
@@ -106,7 +106,7 @@ func Map(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
 		optionMap[opt.Name] = opt
 	}
 
-	margs := Option{
+	margs := MapOption{
 		Zoom: 15,
 	}
 
@@ -132,7 +132,7 @@ func Map(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
 		return
 	}
 
-	reader := Api.GetAdress(margs.Address, margs.Zoom, margs.Type)
+	reader := MapApi.GetMapImage(margs.Address, margs.Zoom, margs.Type)
 
 	err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,

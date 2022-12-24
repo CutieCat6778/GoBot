@@ -62,7 +62,7 @@ func main() {
 	// if *class.RemoveCommands {
 	// 	log.Println("Removing commands...")
 	// 	for _, v := range registeredCommands {
-	// 		err := s.ApplicationCommandDelete(s.State.User.ID, class.ServerID, v.ID)
+	// 		err := s.ApplicationCommandDelete(s.State.User.ID, "", v.ID)
 	// 		if err != nil {
 	// 			utils.SendErrorMessage("Failed to delete commands ", err.Error())
 	// 			log.Panicf("Cannot delete '%v' command: %v", v.Name, err)
