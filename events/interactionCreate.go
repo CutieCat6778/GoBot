@@ -28,7 +28,12 @@ func InteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		}
 		time := r.GetTime()
 
+		if len(i.ApplicationCommandData().Options[0].Name) > 0 {
+			h.Data = h.Data.SubCommandData[i.ApplicationCommandData().Options[0].Name]
+		}
+
 		if current_time-time >= h.Data.Ratelimit && f {
+
 			// Execute command
 			h.Execute(s, i, g)
 		} else {

@@ -13,9 +13,9 @@ import (
 )
 
 var (
-	CurrentWeatherApplicationData = discordgo.ApplicationCommandOption{
-		Name:        "current",
-		Description: "Get current weather information of everywhere",
+	CurrentTemperaturApplicationData = discordgo.ApplicationCommandOption{
+		Name:        "temperatur",
+		Description: "Get current temperatur information of everywhere",
 		Options: []*discordgo.ApplicationCommandOption{
 			{
 				Type:        discordgo.ApplicationCommandOptionString,
@@ -48,10 +48,10 @@ var (
 		},
 		Type: discordgo.ApplicationCommandOptionSubCommand,
 	}
-	CurrentWeatherCommandData class.CommandData
+	CurrentTemperaturCommandData class.CommandData
 )
 
-type CurrentWeatherOption struct {
+type CurrentTemperaturOption struct {
 	Address string
 	Units   string
 	Private bool
@@ -62,14 +62,14 @@ func init() {
 		defaultPerms int64 = discordgo.PermissionSendMessages
 	)
 
-	CurrentWeatherCommandData = class.CommandData{
+	CurrentTemperaturCommandData = class.CommandData{
 		Permissions: defaultPerms,
 		Ratelimit:   5000,
 		BotPerms:    defaultPerms,
 	}
 }
 
-func CurrentWeather(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
+func CurrentTemperatur(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
 	options := i.ApplicationCommandData().Options[0].Options
 
 	m, allow := database.RemoveToken(i.Member.User.ID)
@@ -94,7 +94,7 @@ func CurrentWeather(s *discordgo.Session, i *discordgo.InteractionCreate, g clas
 		optionMap[opt.Name] = opt
 	}
 
-	margs := CurrentWeatherOption{
+	margs := CurrentTemperaturOption{
 		Units: "celsius",
 	}
 
@@ -123,11 +123,17 @@ func CurrentWeather(s *discordgo.Session, i *discordgo.InteractionCreate, g clas
 	name := address.ResourceSets[0].Resources[0].Name
 	conficence := address.ResourceSets[0].Resources[0].Confidence
 	last_update := time.Unix(int64(data.Dt), 0).Format("2006-01-02 15:04:05")
+	var unit string
+	if margs.Units == "celsius" {
+		unit = "℃"
+	} else {
+		unit = "°F"
+	}
 
 	res := []*discordgo.MessageEmbed{
 		{
 			Title:       addressData.PostalCode + " " + addressData.Locality + ", " + addressData.CountryRegion,
-			Description: fmt.Sprintf("**Result**\n - Current weather condition is **%v**, it can also be described as **%v**\n\nDetailed address information: \n - %v\nConfidence: \n - %v", data.Weather[0].Main, data.Weather[0].Description, name, conficence),
+			Description: fmt.Sprintf("**Result**\n - Current temperatur is **%v %v** and it feels like **%v %v**\n\nDetailed address information: \n - %v\nConfidence: \n - %v", data.Main.Temp, unit, data.Main.FeelsLike, unit, name, conficence),
 			Color:       0xf2c56b,
 			Thumbnail: &discordgo.MessageEmbedThumbnail{
 				URL:    api.URLConverter(data.Weather[0].Icon),

@@ -20,9 +20,10 @@ var (
 )
 
 type CommandData struct {
-	Permissions int64
-	Ratelimit   int64
-	BotPerms    int64
+	Permissions    int64
+	Ratelimit      int64
+	BotPerms       int64
+	SubCommandData map[string]CommandData
 }
 
 func init() {

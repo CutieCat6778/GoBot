@@ -14,10 +14,12 @@ var (
 		Description: "A command group for weather commands",
 		Options: []*discordgo.ApplicationCommandOption{
 			&CurrentWeatherApplicationData,
+			&CurrentTemperaturApplicationData,
 		},
 	}
 	WeatherClass       api.Weather
 	WeatherCommandData class.CommandData
+	SubCommandData     map[string]class.CommandData
 )
 
 func init() {
@@ -26,9 +28,14 @@ func init() {
 	)
 	WeatherClass = api.NewWeather()
 	WeatherCommandData = class.CommandData{
-		Permissions: defaultPerms,
-		Ratelimit:   5000,
-		BotPerms:    defaultPerms,
+		Permissions:    defaultPerms,
+		Ratelimit:      5000,
+		BotPerms:       defaultPerms,
+		SubCommandData: SubCommandData,
+	}
+	SubCommandData = map[string]class.CommandData{
+		"current":    CurrentWeatherCommandData,
+		"temperatur": CurrentTemperaturCommandData,
 	}
 }
 
@@ -40,5 +47,7 @@ func WeatherFunc(s *discordgo.Session, i *discordgo.InteractionCreate, g class.G
 	switch options[0].Name {
 	case "current":
 		CurrentWeather(s, i, g)
+	case "temperatur":
+		CurrentTemperatur(s, i, g)
 	}
 }

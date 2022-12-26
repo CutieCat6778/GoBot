@@ -31,6 +31,10 @@ var (
 			Execute: WeatherFunc,
 			Data:    WeatherCommandData,
 		},
+		"temperatur": {
+			Execute: CurrentTemperatur,
+			Data:    CurrentTemperaturCommandData,
+		},
 	}
 	MapApi api.Map = api.NewMap()
 )
