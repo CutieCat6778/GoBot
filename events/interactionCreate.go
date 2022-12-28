@@ -28,7 +28,7 @@ func InteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		}
 		time := r.GetTime()
 
-		if len(i.ApplicationCommandData().Options[0].Name) > 0 {
+		if len(i.ApplicationCommandData().Options) > 1 && len(i.ApplicationCommandData().Options[0].Name) > 0 {
 			h.Data = h.Data.SubCommandData[i.ApplicationCommandData().Options[0].Name]
 		}
 
