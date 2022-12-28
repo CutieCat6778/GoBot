@@ -12,9 +12,9 @@ import (
 )
 
 var (
-	CurrentWeatherApplicationData = discordgo.ApplicationCommandOption{
-		Name:        "current",
-		Description: "Get current weather information of everywhere",
+	CurrentWindspeedApplicationData = discordgo.ApplicationCommandOption{
+		Name:        "windspeed",
+		Description: "Get current wind speed information of everywhere",
 		Options: []*discordgo.ApplicationCommandOption{
 			{
 				Type:        discordgo.ApplicationCommandOptionString,
@@ -47,10 +47,10 @@ var (
 		},
 		Type: discordgo.ApplicationCommandOptionSubCommand,
 	}
-	CurrentWeatherCommandData class.CommandData
+	CurrentWindspeedCommandData class.CommandData
 )
 
-type CurrentWeatherOption struct {
+type CurrentWindspeedOption struct {
 	Address string
 	Units   string
 	Private bool
@@ -61,14 +61,14 @@ func init() {
 		defaultPerms int64 = discordgo.PermissionSendMessages
 	)
 
-	CurrentWeatherCommandData = class.CommandData{
+	CurrentWindspeedCommandData = class.CommandData{
 		Permissions: defaultPerms,
 		Ratelimit:   5000,
 		BotPerms:    defaultPerms,
 	}
 }
 
-func CurrentWeather(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
+func CurrentWindspeed(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
 	options := i.ApplicationCommandData().Options[0].Options
 
 	m, allow := database.RemoveToken(i.Member.User.ID)
@@ -93,7 +93,7 @@ func CurrentWeather(s *discordgo.Session, i *discordgo.InteractionCreate, g clas
 		optionMap[opt.Name] = opt
 	}
 
-	margs := CurrentWeatherOption{
+	margs := CurrentWindspeedOption{
 		Units: "celsius",
 	}
 
@@ -119,14 +119,18 @@ func CurrentWeather(s *discordgo.Session, i *discordgo.InteractionCreate, g clas
 	point := address.ResourceSets[0].Resources[0].Point.Coordinates
 	data := WeatherClass.GetCurrentWeather(point[0], point[1], margs.Units)
 	addressData := address.ResourceSets[0].Resources[0].Address
-	name := address.ResourceSets[0].Resources[0].Name
-	conficence := address.ResourceSets[0].Resources[0].Confidence
 	last_update := time.Unix(int64(data.Dt), 0).Format("2006-01-02 15:04:05")
+	var unit string
+	if margs.Units == "celsius" {
+		unit = "meter/sec"
+	} else {
+		unit = "miles/sec"
+	}
 
 	res := []*discordgo.MessageEmbed{
 		{
 			Title:       addressData.PostalCode + " " + addressData.Locality + ", " + addressData.CountryRegion,
-			Description: fmt.Sprintf("**Result**\n - Current weather condition is **%v**, it can also be described as **%v**\n\nDetailed address information: \n - %v\nConfidence: \n - %v", data.Weather[0].Main, data.Weather[0].Description, name, conficence),
+			Description: fmt.Sprintf("**Result:**\n - Current wind speed is **%v %v** and current wind gust is **%v %v**. The direction of the wind currently **%v°**\n\nTo learn more about the data's values, that has been displayed:\n - [%v](https://en.wikipedia.org/wiki/Wind_speed)\n - [deg°](https://en.wikipedia.org/wiki/Meteorology)\n - [Wind gust](https://en.wikipedia.org/wiki/Wind_gust)", data.Wind.Speed, unit, data.Wind.Gust, unit, data.Wind.Deg, unit),
 			Color:       0xf2c56b,
 			Thumbnail: &discordgo.MessageEmbedThumbnail{
 				URL:    WeatherURLConverter(data.Weather[0].Icon),

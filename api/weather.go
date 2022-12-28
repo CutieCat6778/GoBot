@@ -117,10 +117,3 @@ func (handler Weather) GetForecast(lat float64, long float64, units string) Curr
 
 	return res
 }
-
-func URLConverter(id string) string {
-	url := "http://openweathermap.org/img/wn/%v@4x.png"
-
-	url = fmt.Sprintf(url, id)
-	return url
-}

@@ -16,6 +16,7 @@ var (
 	GGAPIKey       string
 	BINGKey        string
 	WeatherKey     string
+	NasaKey        string
 	RemoveCommands = flag.Bool("rmcmd", true, "Remove all commands after shutdowning or not")
 )
 
@@ -27,9 +28,9 @@ type CommandData struct {
 }
 
 func init() {
-	TOKEN := "MTA1NTU1MzM1Mzc1NDYyODE5Nw.GbYWaN.lIF0mq9BYSDR4rSUSD8iwd3kR5YyC_6hHrN3qk"
+	TOKEN := "MTA1NzY0NjA1OTk2MDE2MDI4Ng.G1qp-u.orbBv-9teDg-Aqg4-MVx9JKx8uNcki3wpHaFLM"
 	DBKEY := "mongodb+srv://admin:!Txzje2006@cluster0.axkhjad.mongodb.net/?retryWrites=true&w=majority"
-	SERVERID := "1054737473802096671"
+	SERVERID := "1056177394093936760"
 	OWNERID := "924351368897106061"
 
 	HOOKURL := "https://discord.com/api/webhooks/1055577948297625600/ci8JcMy8tOfBjI6n3lvz_czL2qepFs4222nOpjQZcr3GlfipNJ_xowy3N-Z1pYBZ6yl7"
@@ -39,6 +40,7 @@ func init() {
 
 	GGAPITOKEN := "AIzaSyDNiNV1ujFuKNCir17Oev7bhDQZgF7givw"
 	BINGTOKEN := "Ahz6TU3QuNiBo8gYTTEzJpbTsZpg4TbsOkMcmsTpg6QpopqrS99Qp3BCImIzLFR7"
+	NASATOKEN := "lgVZOMJlINVlio85EHjb3Z14BkbJlcwgcmKprZQS"
 
 	token := TOKEN
 	serverID := SERVERID
@@ -60,6 +62,7 @@ func init() {
 	flag.StringVar(&GGAPIKey, "ga", ggApi, "")
 	flag.StringVar(&BINGKey, "ba", bingApi, "")
 	flag.StringVar(&WeatherKey, "wa", "e5bafc3618ad164189d42eece89d6bc2", "")
+	flag.StringVar(&NasaKey, "na", NASATOKEN, "")
 
 	flag.Parse()
 

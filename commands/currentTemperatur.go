@@ -1,7 +1,6 @@
 package commands
 
 import (
-	"cutiecat6778/discordbot/api"
 	"cutiecat6778/discordbot/class"
 	"cutiecat6778/discordbot/database"
 	"cutiecat6778/discordbot/utils"
@@ -136,7 +135,7 @@ func CurrentTemperatur(s *discordgo.Session, i *discordgo.InteractionCreate, g c
 			Description: fmt.Sprintf("**Result**\n - Current temperatur is **%v %v** and it feels like **%v %v**\n\nDetailed address information: \n - %v\nConfidence: \n - %v", data.Main.Temp, unit, data.Main.FeelsLike, unit, name, conficence),
 			Color:       0xf2c56b,
 			Thumbnail: &discordgo.MessageEmbedThumbnail{
-				URL:    api.URLConverter(data.Weather[0].Icon),
+				URL:    WeatherURLConverter(data.Weather[0].Icon),
 				Width:  200,
 				Height: 200,
 			},
