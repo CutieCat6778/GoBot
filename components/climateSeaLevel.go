@@ -23,7 +23,7 @@ func GoLeft(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	}
 
 	position := i.MessageComponentData().CustomID
-	position = position[12:]
+	position = position[13:]
 
 	num, _ := strconv.ParseInt(position, 6, 12)
 
@@ -32,7 +32,7 @@ func GoLeft(s *discordgo.Session, i *discordgo.InteractionCreate) {
 
 	embed := []*discordgo.MessageEmbed{
 		{
-			Title:       "Sea level prediction " + position,
+			Title:       "Sea level prediction",
 			Color:       0xf2c56b,
 			Description: "Recent satellite observations have detected that the Greenland and Antarctic ice sheets are losing ice. Even a partial loss of these ice sheets would cause a 1-meter (3-foot) rise. If lost completely, both ice sheets contain enough water to raise sea level by 66 meters (217 feet).\n\nThis visualization shows the effect on coastal regions for each meter of sea level rise, up to 6 meters (19.7 feet). Land that would be covered in water is shaded red.\n\n[Resources](https://climate.nasa.gov/interactives/climate-time-machine)",
 			Footer: &discordgo.MessageEmbedFooter{
