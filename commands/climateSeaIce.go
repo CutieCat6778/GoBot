@@ -10,9 +10,9 @@ import (
 )
 
 var (
-	APODApplicationData = discordgo.ApplicationCommandOption{
-		Name:        "today",
-		Description: "Astronomy Picture of the Day",
+	SeaIceApplicationData = discordgo.ApplicationCommandOption{
+		Name:        "seaice",
+		Description: "Visualization of sea ice from 1979 to 2022",
 		Options: []*discordgo.ApplicationCommandOption{
 			{
 				Type:        discordgo.ApplicationCommandOptionBoolean,
@@ -23,10 +23,10 @@ var (
 		},
 		Type: discordgo.ApplicationCommandOptionSubCommand,
 	}
-	APODCommandData class.CommandData
+	SeaIceCommandData class.CommandData
 )
 
-type APODOption struct {
+type SeaIceOption struct {
 	Private bool
 }
 
@@ -35,14 +35,14 @@ func init() {
 		defaultPerms int64 = discordgo.PermissionSendMessages
 	)
 
-	APODCommandData = class.CommandData{
+	SeaIceCommandData = class.CommandData{
 		Permissions: defaultPerms,
 		Ratelimit:   5000,
 		BotPerms:    defaultPerms,
 	}
 }
 
-func APOD(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
+func SeaIce(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
 	options := i.ApplicationCommandData().Options[0].Options
 
 	m, allow := database.RemoveToken(i.Member.User.ID)
@@ -67,26 +67,18 @@ func APOD(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) 
 		optionMap[opt.Name] = opt
 	}
 
-	margs := APODOption{}
+	margs := SeaIceOption{}
 	if option, ok := optionMap["private"]; ok {
 		margs.Private = option.BoolValue()
 	}
 
-	data := AstronomyClass.APOD()
-	height, width := AstronomyClass.GetImageSize(data.URL)
-
 	res := []*discordgo.MessageEmbed{
 		{
-			Title:       data.Title,
-			Description: data.Explanation,
+			Title:       "Annual Arctic Sea Ice Minimum Area 1979-2022",
 			Color:       0xf2c56b,
+			Description: "Satellite-based passive microwave images of the sea ice have provided a reliable tool for continuously monitoring changes in the Arctic ice since 1979. Every summer the Arctic ice cap melts down to what scientists call its \"minimum\" before colder weather begins to cause ice cover to increase. This graph displays the area of the minimum sea ice coverage each year from 1979 through 2022. In 2022, the Arctic minimum sea ice covered an area of 4.16 million square kilometers (1.6 million square miles).\n\nThis visualization shows the expanse of the annual minimum Arctic sea ice for each year from 1979 through 2022 as derived from passive microwave data.\n\n[Video link](https://svs.gsfc.nasa.gov/vis/a000000/a005000/a005036/sea_ice_min_w_graph_2022_1080p30.mp4)",
 			Footer: &discordgo.MessageEmbedFooter{
-				Text: "Was taken in " + data.Date + " by " + data.Copyright,
-			},
-			Image: &discordgo.MessageEmbedImage{
-				URL:    data.URL,
-				Width:  width,
-				Height: height,
+				Text: "Nasa Scientific Visualization Studio",
 			},
 		},
 	}

@@ -13,10 +13,10 @@ var (
 		Description: "A command group for astronomy commands",
 		Options:     []*discordgo.ApplicationCommandOption{&APODApplicationData},
 	}
-	AstronomyClass       api.Astronomy
-	AstronomyCommandData class.CommandData
-	SubCommandData       map[string]class.CommandData
-	SubCommandHandler    map[string]Command
+	AstronomyClass             api.Astronomy
+	AstronomyCommandData       class.CommandData
+	AstronomySubCommandData    map[string]class.CommandData
+	AstronomySubCommandHandler map[string]Command
 )
 
 func init() {
@@ -28,12 +28,12 @@ func init() {
 		Permissions:    defaultPerms,
 		Ratelimit:      5000,
 		BotPerms:       defaultPerms,
-		SubCommandData: SubCommandData,
+		SubCommandData: AstronomySubCommandData,
 	}
-	SubCommandData = map[string]class.CommandData{
+	AstronomySubCommandData = map[string]class.CommandData{
 		"today": APODCommandData,
 	}
-	SubCommandHandler = map[string]Command{
+	AstronomySubCommandHandler = map[string]Command{
 		"today": {
 			Execute: APOD,
 			Data:    APODCommandData,
@@ -44,7 +44,7 @@ func init() {
 func AstronomyFunc(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
 	options := i.ApplicationCommandData().Options
 
-	if h, ok := SubCommandHandler[options[0].Name]; ok {
+	if h, ok := AstronomySubCommandHandler[options[0].Name]; ok {
 		h.Execute(s, i, g)
 	}
 }

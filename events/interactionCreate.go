@@ -2,15 +2,26 @@ package events
 
 import (
 	"cutiecat6778/discordbot/commands"
+	"cutiecat6778/discordbot/components"
 	"cutiecat6778/discordbot/database"
 	"cutiecat6778/discordbot/utils"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/bwmarrin/discordgo"
 )
 
 func InteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
+	switch i.Type {
+	case discordgo.InteractionApplicationCommand:
+		InteractionApplicationCommand(s, i)
+	case discordgo.InteractionMessageComponent:
+		InteractionMessageComponent(s, i)
+	}
+}
+
+func InteractionApplicationCommand(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	slashHandlers := commands.SlashHandlers()
 	g, f := database.FindServerByServerID(i.GuildID)
 	if !f {
@@ -36,9 +47,24 @@ func InteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
 
 			// Execute command
 			h.Execute(s, i, g)
+			Ratelimit.Write(i.Member.User.ID)
 		} else {
 			s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("Please slow down, don't use this command to fast! Please wait "+fmt.Sprint((current_time-time)-h.Data.Ratelimit)+" seconds", nil, nil))
 			return
 		}
+	}
+}
+
+func InteractionMessageComponent(s *discordgo.Session, i *discordgo.InteractionCreate) {
+	name := i.MessageComponentData().CustomID
+
+	if strings.HasPrefix(name, "sealevel_right") {
+		name = name[0:14]
+	} else if strings.HasPrefix(name, "sealevel_left") {
+		name = name[0:13]
+	}
+
+	if h, ok := components.ComponentsHandlers[name]; ok {
+		h(s, i)
 	}
 }

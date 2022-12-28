@@ -13,7 +13,7 @@ type Command struct {
 }
 
 var (
-	commands        = []*discordgo.ApplicationCommand{&PingApplicationData, &MapApplicationData, &WeatherApplicationData, &AstronomyApplicationData}
+	commands        = []*discordgo.ApplicationCommand{&PingApplicationData, &MapApplicationData, &WeatherApplicationData, &AstronomyApplicationData, &ClimateApplicationData}
 	commandHandlers = map[string]Command{
 		"ping": {
 			Execute: Ping,
@@ -30,6 +30,10 @@ var (
 		"astronomy": {
 			Execute: AstronomyFunc,
 			Data:    AstronomyCommandData,
+		},
+		"climate": {
+			Execute: ClimateFunc,
+			Data:    ClimateCommandData,
 		},
 	}
 	MapApi api.Map = api.NewMap()
