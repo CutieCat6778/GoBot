@@ -34,7 +34,7 @@ func init() {
 	SERVERID := "1056177394093936760"
 	OWNERID := "924351368897106061"
 
-	HOOKURL := "https://discord.com/api/webhooks/1055577948297625600/ci8JcMy8tOfBjI6n3lvz_czL2qepFs4222nOpjQZcr3GlfipNJ_xowy3N-Z1pYBZ6yl7"
+	HOOKURL := "https://discord.com/api/webhooks/1057740580861509702/n9pV73DsR6yL3fr5qIbske_gcHsfYTiBpkgEKCVbMmJrE82dG44GkB-1ZNpw-pwW0U3t"
 
 	HOOKID := "1055577948297625600"
 	HOOKTOKEN := "ci8JcMy8tOfBjI6n3lvz_czL2qepFs4222nOpjQZcr3GlfipNJ_xowy3N-Z1pYBZ6yl7"
