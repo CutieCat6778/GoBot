@@ -5,7 +5,6 @@ import (
 	"cutiecat6778/discordbot/utils"
 	"errors"
 	"fmt"
-	"log"
 	"strconv"
 	"strings"
 
@@ -37,7 +36,7 @@ func Move(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			num -= 1
 		}
 	}
-	log.Println(num, move, i.MessageComponentData().CustomID)
+	utils.HandleDebugMessage(num, move, i.MessageComponentData().CustomID)
 	url := commands.URLResolver(user.Location, num)
 	height, width := commands.AstronomyClass.GetImageSize(url)
 	embed := []*discordgo.MessageEmbed{

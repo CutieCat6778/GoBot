@@ -5,8 +5,6 @@ import (
 	"cutiecat6778/discordbot/class"
 	"cutiecat6778/discordbot/database"
 	"cutiecat6778/discordbot/utils"
-	"log"
-
 	"github.com/bwmarrin/discordgo"
 )
 
@@ -53,7 +51,7 @@ func SlashHandlers() map[string]Command {
 func RemoveToken(s *discordgo.Session, i *discordgo.InteractionCreate, id string) bool {
 	m, allow := database.RemoveToken(i.Member.User.ID)
 
-	log.Println(m.MemberID, m.Tokens, allow)
+	utils.HandleDebugMessage(m.MemberID, m.Tokens, allow)
 
 	if !allow {
 		if len(m.MemberID) < 5 {

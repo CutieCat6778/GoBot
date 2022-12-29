@@ -4,8 +4,6 @@ import (
 	"cutiecat6778/discordbot/class"
 	"cutiecat6778/discordbot/utils"
 	"fmt"
-	"log"
-
 	"github.com/bwmarrin/discordgo"
 )
 
@@ -89,7 +87,7 @@ func SeaLevel(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guil
 
 	url := URLResolver(margs.Location, 0)
 
-	log.Println(url)
+	utils.HandleDebugMessage(url)
 
 	height, width := AstronomyClass.GetImageSize(url)
 	SeaLevelScroll.Register(i.Member.User.ID, margs.Location)

@@ -6,7 +6,6 @@ import (
 	"cutiecat6778/discordbot/database"
 	"cutiecat6778/discordbot/utils"
 	"fmt"
-	"log"
 	"strings"
 	"time"
 
@@ -75,7 +74,7 @@ func InteractionMessageComponent(s *discordgo.Session, i *discordgo.InteractionC
 		name = name[0:8]
 	}
 
-	log.Println(name)
+	utils.HandleDebugMessage(name)
 
 	if h, ok := components.ComponentsHandlers[name]; ok {
 		h(s, i)

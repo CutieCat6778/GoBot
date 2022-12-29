@@ -5,7 +5,6 @@ import (
 	"cutiecat6778/discordbot/class"
 	"cutiecat6778/discordbot/utils"
 	"errors"
-	"log"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -84,7 +83,7 @@ func RefreshToken(id string) bool {
 		return false
 	}
 
-	log.Println("Refreshing ", id, m.MemberID)
+	utils.HandleDebugMessage("Refreshing ", id, m.MemberID)
 
 	update := bson.D{{Key: "$set", Value: bson.D{{Key: "tokens", Value: 19}, {Key: "last_refreshed", Value: current_time}}}}
 
@@ -93,7 +92,7 @@ func RefreshToken(id string) bool {
 		utils.HandleServerError(err)
 	}
 
-	log.Println("Refreshed ", id)
+	utils.HandleDebugMessage("Refreshed ", id)
 
 	return true
 }

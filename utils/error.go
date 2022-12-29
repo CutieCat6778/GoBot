@@ -47,7 +47,7 @@ func HandleClientBlock(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	embed := []*discordgo.MessageEmbed{
 		{
 			Color:       0xf2c56b,
-			Description: "**Command under contruction**\n\nSorry for the inconvenient, there is a problem with this command currently. The developer has been informed, please try again later!",
+			Description: "**Command under construction**\n\nSorry for the inconvenient, there is a problem with this command currently. The developer has been informed, please try again later!",
 			Footer: &discordgo.MessageEmbedFooter{
 				Text: "From GeoBot developer ",
 			},
@@ -69,4 +69,16 @@ func HandleClientBlock(s *discordgo.Session, i *discordgo.InteractionCreate) {
 func HandleServerError(err error) {
 	SendErrorMessage("[Server] [Error]", err.Error())
 	Error.Fatal(err)
+}
+
+func HandleInfoMessage(msg ...any) {
+	Info.Println(msg)
+}
+
+func HandleDebugMessage(msg ...any) {
+	Debug.Println(msg)
+}
+
+func HandleWarningMessage(msg ...any) {
+	Warning.Println(msg)
 }

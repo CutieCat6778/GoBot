@@ -5,7 +5,6 @@ import (
 	"cutiecat6778/discordbot/commands"
 	"cutiecat6778/discordbot/events"
 	"cutiecat6778/discordbot/utils"
-	"log"
 	"os"
 	"os/signal"
 	"syscall"
@@ -19,7 +18,7 @@ func init() {
 	var err error
 	s, err = discordgo.New("Bot " + class.Token)
 	if err != nil {
-		log.Fatalf("Invalid bot parameters: %v", err)
+		utils.HandleServerError(err)
 	}
 }
 
@@ -33,11 +32,10 @@ func main() {
 	err := s.Open()
 
 	if err != nil {
-		log.Fatal("Cannot open a session: ", err)
-		return
+		utils.HandleServerError(err)
 	}
 
-	log.Println("Regsitering commands")
+	utils.HandleDebugMessage("Registering commands")
 
 	slashCommands := commands.SlashCommands()
 
@@ -45,14 +43,13 @@ func main() {
 	for i, v := range slashCommands {
 		cmd, err := s.ApplicationCommandCreate(s.State.User.ID, "", v)
 		if err != nil {
-			utils.SendErrorMessage("Error while resgistering commands! ", err.Error())
-			log.Fatal("Error while registering commands: ", err)
+			utils.HandleServerError(err)
 		}
 
 		registeredCommands[i] = cmd
 	}
 
-	log.Println("Bot is running right now!")
+	utils.HandleDebugMessage("Bot is running right now!")
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-sc
@@ -60,15 +57,14 @@ func main() {
 	s.Close()
 
 	if *class.RemoveCommands {
-		log.Println("Removing commands...")
+		utils.HandleDebugMessage("Removing commands...")
 		for _, v := range registeredCommands {
 			err := s.ApplicationCommandDelete(s.State.User.ID, "", v.ID)
 			if err != nil {
-				utils.SendErrorMessage("Failed to delete commands ", err.Error())
-				log.Panicf("Cannot delete '%v' command: %v", v.Name, err)
+				utils.HandleServerError(err)
 			}
 		}
 	}
 
-	log.Println("Gracefully shutting down.")
+	utils.HandleDebugMessage("Gracefully shutting down.")
 }
