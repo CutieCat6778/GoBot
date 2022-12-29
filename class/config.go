@@ -1,9 +1,9 @@
 package class
 
 import (
-	"cutiecat6778/discordbot/utils"
 	"errors"
 	"flag"
+	"log"
 )
 
 var (
@@ -69,6 +69,6 @@ func init() {
 	flag.Parse()
 
 	if Token == "" || ServerID == "" || OwnerID == "" || DBKey == "" {
-		utils.HandleServerError(errors.New("missing credentials"))
+		log.Fatal(errors.New("missing credentials"))
 	}
 }
