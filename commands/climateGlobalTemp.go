@@ -10,9 +10,9 @@ import (
 )
 
 var (
-	SeaIceApplicationData = discordgo.ApplicationCommandOption{
-		Name:        "seaice",
-		Description: "Visualization of sea ice from 1979 to 2022",
+	GlobalTempApplicationData = discordgo.ApplicationCommandOption{
+		Name:        "globaltemperatur",
+		Description: "Global Temperature Anomalies from 1880 to 2021",
 		Options: []*discordgo.ApplicationCommandOption{
 			{
 				Type:        discordgo.ApplicationCommandOptionBoolean,
@@ -23,10 +23,10 @@ var (
 		},
 		Type: discordgo.ApplicationCommandOptionSubCommand,
 	}
-	SeaIceCommandData class.CommandData
+	GlobalTempCommandData class.CommandData
 )
 
-type SeaIceOption struct {
+type GlobalTempOption struct {
 	Private bool
 }
 
@@ -35,14 +35,14 @@ func init() {
 		defaultPerms int64 = discordgo.PermissionSendMessages
 	)
 
-	SeaIceCommandData = class.CommandData{
+	GlobalTempCommandData = class.CommandData{
 		Permissions: defaultPerms,
 		Ratelimit:   5000,
 		BotPerms:    defaultPerms,
 	}
 }
 
-func SeaIce(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
+func GlobalTemp(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
 	options := i.ApplicationCommandData().Options[0].Options
 
 	m, allow := database.RemoveToken(i.Member.User.ID)
@@ -67,21 +67,21 @@ func SeaIce(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds
 		optionMap[opt.Name] = opt
 	}
 
-	margs := SeaIceOption{}
+	margs := GlobalTempOption{}
 	if option, ok := optionMap["private"]; ok {
 		margs.Private = option.BoolValue()
 	}
 
 	res := []*discordgo.MessageEmbed{
 		{
-			Title:       "Annual Arctic Sea Ice Minimum Area 1979-2022",
+			Title:       "Global Temperature Anomalies from 1880 to 2021",
 			Color:       0xf2c56b,
-			Description: "Satellite-based passive microwave images of the sea ice have provided a reliable tool for continuously monitoring changes in the Arctic ice since 1979. Every summer the Arctic ice cap melts down to what scientists call its \"minimum\" before colder weather begins to cause ice cover to increase. This graph displays the area of the minimum sea ice coverage each year from 1979 through 2022. In 2022, the Arctic minimum sea ice covered an area of 4.16 million square kilometers (1.6 million square miles).\n\nThis visualization shows the expanse of the annual minimum Arctic sea ice for each year from 1979 through 2022 as derived from passive microwave data.\n\n[Resources](https://svs.gsfc.nasa.gov/5036)",
+			Description: "Earth's global average surface temperature in 2021 tied with 2018 as the sixth warmest on record, according to independent analyses done by NASA and NOAA.\n\nContinuing the planet's long-term warming trend, global temperatures in 2021 were 1.5 degrees Fahrenheit (or 0.85 degrees Celsius) above the average for NASA's baseline period, according to scientists at NASA's Goddard Institute for Space Studies (GISS) in New York.\n\nCollectively, the past eight years are the top eight warmest years since modern record keeping began in 1880. This annual temperature data makes up the global temperature record - and it's how scientists know that the planet is warming.\n\nGISS is a NASA laboratory managed by the Earth Sciences Division of the agency's Goddard Space Flight Center in Greenbelt, Maryland. The laboratory is affiliated with Columbia University's Earth Institute and School of Engineering and Applied Science in New York.\n\nFor more information about NASA's Earth science missions, visit: [https://www.nasa.gov/earth](https://www.nasa.gov/earth)\n\n[Resources](https://svs.gsfc.nasa.gov/4964)",
 			Footer: &discordgo.MessageEmbedFooter{
-				Text: "Nasa Scientific Visualization Studio",
+				Text: "NASA/GISS | Nasa Scientific Visualization Studio",
 			},
 			Image: &discordgo.MessageEmbedImage{
-				URL:    "https://cdn.thinh.tech/climate/seaice.gif",
+				URL:    "https://cdn.thinh.tech/climate/temp.gif",
 				Width:  800,
 				Height: 450,
 			},

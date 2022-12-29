@@ -10,7 +10,7 @@ var (
 	ClimateApplicationData = discordgo.ApplicationCommand{
 		Name:        "climate",
 		Description: "A command group for climate commands",
-		Options:     []*discordgo.ApplicationCommandOption{&SeaIceApplicationData, &SeaLevelApplicationData},
+		Options:     []*discordgo.ApplicationCommandOption{&SeaIceApplicationData, &SeaLevelApplicationData, &GlobalTempApplicationData, &CO2ApplicationData},
 	}
 	ClimateCommandData       class.CommandData
 	ClimateSubCommandData    map[string]class.CommandData
@@ -28,8 +28,10 @@ func init() {
 		SubCommandData: ClimateSubCommandData,
 	}
 	ClimateSubCommandData = map[string]class.CommandData{
-		"seaice":   SeaIceCommandData,
-		"sealevel": SeaLevelCommandData,
+		"seaice":           SeaIceCommandData,
+		"sealevel":         SeaLevelCommandData,
+		"co2airs":          CO2CommandData,
+		"globaltemperatur": GlobalTempCommandData,
 	}
 	ClimateSubCommandHandler = map[string]Command{
 		"seaice": {
@@ -39,6 +41,14 @@ func init() {
 		"sealevel": {
 			Execute: SeaLevel,
 			Data:    SeaLevelCommandData,
+		},
+		"co2airs": {
+			Execute: CO2,
+			Data:    CO2CommandData,
+		},
+		"globaltemperatur": {
+			Execute: GlobalTemp,
+			Data:    GlobalTempCommandData,
 		},
 	}
 }

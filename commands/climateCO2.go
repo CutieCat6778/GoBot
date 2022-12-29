@@ -10,9 +10,9 @@ import (
 )
 
 var (
-	SeaIceApplicationData = discordgo.ApplicationCommandOption{
-		Name:        "seaice",
-		Description: "Visualization of sea ice from 1979 to 2022",
+	CO2ApplicationData = discordgo.ApplicationCommandOption{
+		Name:        "co2airs",
+		Description: "20 years of AIRS Global Carbon Dioxide (CO₂) measurements (2002- March 2022)",
 		Options: []*discordgo.ApplicationCommandOption{
 			{
 				Type:        discordgo.ApplicationCommandOptionBoolean,
@@ -23,10 +23,10 @@ var (
 		},
 		Type: discordgo.ApplicationCommandOptionSubCommand,
 	}
-	SeaIceCommandData class.CommandData
+	CO2CommandData class.CommandData
 )
 
-type SeaIceOption struct {
+type CO2Option struct {
 	Private bool
 }
 
@@ -35,14 +35,14 @@ func init() {
 		defaultPerms int64 = discordgo.PermissionSendMessages
 	)
 
-	SeaIceCommandData = class.CommandData{
+	CO2CommandData = class.CommandData{
 		Permissions: defaultPerms,
 		Ratelimit:   5000,
 		BotPerms:    defaultPerms,
 	}
 }
 
-func SeaIce(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
+func CO2(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
 	options := i.ApplicationCommandData().Options[0].Options
 
 	m, allow := database.RemoveToken(i.Member.User.ID)
@@ -67,21 +67,21 @@ func SeaIce(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds
 		optionMap[opt.Name] = opt
 	}
 
-	margs := SeaIceOption{}
+	margs := CO2Option{}
 	if option, ok := optionMap["private"]; ok {
 		margs.Private = option.BoolValue()
 	}
 
 	res := []*discordgo.MessageEmbed{
 		{
-			Title:       "Annual Arctic Sea Ice Minimum Area 1979-2022",
+			Title:       "20 years of AIRS Global Carbon Dioxide (CO₂) measurements (2002- March 2022)",
 			Color:       0xf2c56b,
-			Description: "Satellite-based passive microwave images of the sea ice have provided a reliable tool for continuously monitoring changes in the Arctic ice since 1979. Every summer the Arctic ice cap melts down to what scientists call its \"minimum\" before colder weather begins to cause ice cover to increase. This graph displays the area of the minimum sea ice coverage each year from 1979 through 2022. In 2022, the Arctic minimum sea ice covered an area of 4.16 million square kilometers (1.6 million square miles).\n\nThis visualization shows the expanse of the annual minimum Arctic sea ice for each year from 1979 through 2022 as derived from passive microwave data.\n\n[Resources](https://svs.gsfc.nasa.gov/5036)",
+			Description: "This data visualization shows the global distribution and variation of the concentration of mid-tropospheric carbon dioxide observed by the Atmospheric Infrared Sounder (AIRS) on the NASA Aqua spacecraft over a 20 year timespan. One obvious feature that we see in the data is a continual increase in carbon dioxide with time, as seen in the shift in the color of the map from light yellow towards red as time progresses. Another feature is the seasonal variation of carbon dioxide in the northern hemisphere, which is governed by the growth cycle of plants. This can be seen as a pulsing in the colors, with a shift towards lighter colors starting in April/May each year and a shift towards red as the end of each growing season passes into winter. The seasonal cycle is more pronounced in the northern hemisphere than the southern hemisphere, since the majority of the land mass is in the north.\n\nThe visualization includes a data-driven spatial map of global carbon dioxide and a timeline on the bottom. The timeline showcases the monthly timestep and is paired with the adjusted carbon dioxide value. Areas where the air pressure is less than 750mB (areas of high-altitude) have been marked in the visualization as low data quality (striped) areas. This entry offers two versions of low data quality (stiped) areas. One version includes striped regions as they are calculated on data values and the second version features striped regions below 60 South.\n\n[Resources](https://svs.gsfc.nasa.gov/4990)",
 			Footer: &discordgo.MessageEmbedFooter{
-				Text: "Nasa Scientific Visualization Studio",
+				Text: "Nasa | Atmospheric Infrared Sounder (AIRS)",
 			},
 			Image: &discordgo.MessageEmbedImage{
-				URL:    "https://cdn.thinh.tech/climate/seaice.gif",
+				URL:    "https://cdn.thinh.tech/climate/co2.gif",
 				Width:  800,
 				Height: 450,
 			},
