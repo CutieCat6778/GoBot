@@ -3,7 +3,6 @@ package commands
 import (
 	"cutiecat6778/discordbot/class"
 	"cutiecat6778/discordbot/utils"
-	"log"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -73,13 +72,13 @@ func SeaIce(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds
 		err := s.InteractionRespond(i.Interaction, utils.SendPrivateEmbed(res, nil))
 
 		if err != nil {
-			log.Fatal(err)
+			utils.HandleClientError(s, i, err, "seaice")
 		}
 	} else {
 		err := s.InteractionRespond(i.Interaction, utils.SendEmbed(res, nil))
 
 		if err != nil {
-			log.Fatal(err)
+			utils.HandleClientError(s, i, err, "seaice")
 		}
 	}
 }

@@ -59,13 +59,13 @@ func RemoveToken(s *discordgo.Session, i *discordgo.InteractionCreate, id string
 		if len(m.MemberID) < 5 {
 			err := s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("Error while trying to run this command, please contact support!", nil, nil))
 			if err != nil {
-				log.Println(err)
+				utils.HandleServerError(err)
 			}
 			return false
 		} else {
 			err := s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("You don't have any token to use this command. Please wait 6h to retry!", nil, nil))
 			if err != nil {
-				log.Println(err)
+				utils.HandleServerError(err)
 			}
 			return false
 		}

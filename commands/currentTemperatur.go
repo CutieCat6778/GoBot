@@ -4,7 +4,6 @@ import (
 	"cutiecat6778/discordbot/class"
 	"cutiecat6778/discordbot/utils"
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/bwmarrin/discordgo"
@@ -95,8 +94,7 @@ func CurrentTemperatur(s *discordgo.Session, i *discordgo.InteractionCreate, g c
 	if len(address.ResourceSets) == 0 || address.ResourceSets[0].EstimatedTotal < 1 {
 		err := s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("Address not found!", nil, nil))
 		if err != nil {
-			utils.SendErrorMessage("Problem while trying to send private interaction message: ", err.Error())
-			log.Fatal(err)
+			utils.HandleClientError(s, i, err, "temperatur")
 		}
 		return
 	}
@@ -132,13 +130,13 @@ func CurrentTemperatur(s *discordgo.Session, i *discordgo.InteractionCreate, g c
 		err := s.InteractionRespond(i.Interaction, utils.SendPrivateEmbed(res, nil))
 
 		if err != nil {
-			log.Fatal(err)
+			utils.HandleClientError(s, i, err, "temperatur")
 		}
 	} else {
 		err := s.InteractionRespond(i.Interaction, utils.SendEmbed(res, nil))
 
 		if err != nil {
-			log.Fatal(err)
+			utils.HandleClientError(s, i, err, "temperatur")
 		}
 	}
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"cutiecat6778/discordbot/class"
 	"cutiecat6778/discordbot/utils"
+	"errors"
 	"log"
 	"time"
 
@@ -23,18 +24,15 @@ func FindUserByMemberID(id string) (class.Members, bool) {
 		if len(m) > 0 {
 			u, f = FindUserByID(m)
 			if !f {
-				utils.SendErrorMessage("Problem while trying to fetch member data: ", err.Error())
-				log.Fatal("Problem while trying to fetch data: ", err)
+				utils.HandleServerError(errors.New("failed to find user with id" + m))
 			}
 		} else {
-			utils.SendErrorMessage("Problem while trying to write member data: ", err.Error())
-			log.Fatal("Problem while trying to write data: ", err)
+			utils.HandleServerError(errors.New("failed to find user with id" + m))
 		}
 		return class.Members{MemberID: u.MemberID, CreatedAt: u.CreatedAt, Tokens: u.Tokens, LastRefreshed: u.LastRefreshed}, true
 	}
 	if err != nil {
-		utils.SendErrorMessage("Problem while trying to fetch member data: ", err.Error())
-		log.Fatal("Problem while trying to fetch data: ", err)
+		utils.HandleServerError(err)
 	}
 
 	return class.Members{MemberID: result.MemberID, CreatedAt: result.CreatedAt, Tokens: result.Tokens, LastRefreshed: result.LastRefreshed}, true
@@ -48,8 +46,7 @@ func FindUserByID(id string) (class.Members, bool) {
 		return class.Members{MemberID: "", CreatedAt: 0}, false
 	}
 	if err != nil {
-		utils.SendErrorMessage("Problem while trying to fetch member data: ", err.Error())
-		log.Fatal("Problem while trying to fetch data: ", err)
+		utils.HandleServerError(err)
 	}
 
 	return class.Members{MemberID: result.MemberID, CreatedAt: result.CreatedAt, Tokens: result.Tokens, LastRefreshed: result.LastRefreshed}, true
@@ -60,7 +57,7 @@ func CreateMember(id string) string {
 
 	res, err := Members.InsertOne(context.TODO(), guild)
 	if err != nil {
-		log.Fatal("Problem while trying to write datas: ", err)
+		utils.HandleServerError(err)
 	}
 
 	return res.InsertedID.(primitive.ObjectID).String()
@@ -71,8 +68,7 @@ func UpdateMember(id string, update *class.Members) bool {
 
 	_, err := Members.UpdateOne(context.TODO(), filter, update)
 	if err != nil {
-		utils.SendErrorMessage("Failed to update Member! ", err.Error())
-		log.Fatal("Failed to update Member: ", err)
+		utils.HandleServerError(err)
 	}
 
 	return true
@@ -84,8 +80,7 @@ func RefreshToken(id string) bool {
 
 	m, f := FindUserByMemberID(id)
 	if !f {
-		utils.SendErrorMessage("Failed to find user", "")
-		log.Fatal("Failed to find user")
+		utils.HandleServerError(errors.New("unable to find user " + id))
 		return false
 	}
 
@@ -95,8 +90,7 @@ func RefreshToken(id string) bool {
 
 	_, err := Members.UpdateOne(context.TODO(), filter, update)
 	if err != nil {
-		utils.SendErrorMessage("Failed to update member! ", err.Error())
-		log.Fatal("Failed to update Member: ", err)
+		utils.HandleServerError(err)
 	}
 
 	log.Println("Refreshed ", id)
@@ -110,8 +104,7 @@ func RemoveToken(id string) (class.Members, bool) {
 
 	m, f := FindUserByMemberID(id)
 	if !f {
-		utils.SendErrorMessage("Failed to find user", "")
-		log.Fatal("Failed to find user")
+		utils.HandleServerError(errors.New("unable to find user " + id))
 	}
 
 	tokenLeft := m.Tokens - 1
@@ -132,8 +125,7 @@ func RemoveToken(id string) (class.Members, bool) {
 
 	_, err := Members.UpdateOne(context.TODO(), filter, update)
 	if err != nil {
-		utils.SendErrorMessage("Failed to update guild! ", err.Error())
-		log.Fatal("Failed to update Member: ", err)
+		utils.HandleServerError(err)
 	}
 
 	return m, true

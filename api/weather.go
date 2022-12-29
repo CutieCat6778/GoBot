@@ -2,10 +2,10 @@ package api
 
 import (
 	"cutiecat6778/discordbot/class"
+	"cutiecat6778/discordbot/utils"
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"time"
 )
@@ -47,12 +47,12 @@ func (handler Weather) GetCurrentWeather(lat float64, long float64, units string
 
 	resp, err := handler.HttpClient.Get(url)
 	if err != nil {
-		log.Fatal("Failed to fetch: ", err)
+		utils.HandleServerError(err)
 	}
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal("Failed to read: ", err)
+		utils.HandleServerError(err)
 	}
 
 	defer resp.Body.Close()
@@ -61,7 +61,7 @@ func (handler Weather) GetCurrentWeather(lat float64, long float64, units string
 
 	err = json.Unmarshal(body, &res)
 	if err != nil {
-		log.Fatal("Error while formating json: ", err)
+		utils.HandleServerError(err)
 	}
 
 	return res
@@ -72,12 +72,12 @@ func (handler Weather) GetRoadRisk(lat float64, long float64) RoadRiskStruct {
 
 	resp, err := handler.HttpClient.Get(url)
 	if err != nil {
-		log.Fatal("Failed to fetch: ", err)
+		utils.HandleServerError(err)
 	}
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal("Failed to read: ", err)
+		utils.HandleServerError(err)
 	}
 
 	defer resp.Body.Close()
@@ -86,7 +86,7 @@ func (handler Weather) GetRoadRisk(lat float64, long float64) RoadRiskStruct {
 
 	err = json.Unmarshal(body, &res)
 	if err != nil {
-		log.Fatal("Error while formating json: ", err)
+		utils.HandleServerError(err)
 	}
 
 	return res
@@ -98,12 +98,12 @@ func (handler Weather) GetForecast(lat float64, long float64, units string) Curr
 
 	resp, err := handler.HttpClient.Get(url)
 	if err != nil {
-		log.Fatal("Failed to fetch: ", err)
+		utils.HandleServerError(err)
 	}
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal("Failed to read: ", err)
+		utils.HandleServerError(err)
 	}
 
 	defer resp.Body.Close()
@@ -112,7 +112,7 @@ func (handler Weather) GetForecast(lat float64, long float64, units string) Curr
 
 	err = json.Unmarshal(body, &res)
 	if err != nil {
-		log.Fatal("Error while formating json: ", err)
+		utils.HandleServerError(err)
 	}
 
 	return res

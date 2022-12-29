@@ -30,6 +30,8 @@ func InteractionApplicationCommand(s *discordgo.Session, i *discordgo.Interactio
 		g, _ = database.FindServerByID(id)
 	}
 
+	name := i.ApplicationCommandData().Name
+
 	if h, ok := slashHandlers[i.ApplicationCommandData().Name]; ok {
 		// Ratelimit
 		current_time := time.Now().Unix()
@@ -42,6 +44,16 @@ func InteractionApplicationCommand(s *discordgo.Session, i *discordgo.Interactio
 
 		if len(i.ApplicationCommandData().Options) > 1 && len(i.ApplicationCommandData().Options[0].Name) > 0 {
 			h.Data = h.Data.SubCommandData[i.ApplicationCommandData().Options[0].Name]
+			name = i.ApplicationCommandData().Options[0].Name
+		}
+
+		c, f1 := utils.CommandBlock.Get(name)
+		if f1 {
+			status := c.GetStatus()
+			if status {
+				utils.HandleClientBlock(s, i)
+				return
+			}
 		}
 
 		if current_time-time >= h.Data.Ratelimit && f {

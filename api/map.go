@@ -3,10 +3,10 @@ package api
 import (
 	"bytes"
 	"cutiecat6778/discordbot/class"
+	"cutiecat6778/discordbot/utils"
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 )
 
@@ -36,12 +36,12 @@ func (handler Map) Get(lat float64, long float64, zoom int64, maptype string) *b
 	url := fmt.Sprintf(MapURL, lat, long, zoom, maptype)
 	resp, err := handler.HttpClient.Get(url)
 	if err != nil {
-		log.Fatal("Failed to fetch: ", err)
+		utils.HandleServerError(err)
 	}
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal("Failed to read: ", err)
+		utils.HandleServerError(err)
 	}
 
 	defer resp.Body.Close()
@@ -53,12 +53,12 @@ func (handler Map) GetAddress(query string) BingRes {
 	url := fmt.Sprintf(AddressURL, query)
 	resp, err := handler.HttpClient.Get(url)
 	if err != nil {
-		log.Fatal("Failed to fetch address: ", err)
+		utils.HandleServerError(err)
 	}
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal("Failed to read address: ", err)
+		utils.HandleServerError(err)
 	}
 
 	defer resp.Body.Close()
@@ -67,7 +67,7 @@ func (handler Map) GetAddress(query string) BingRes {
 
 	err = json.Unmarshal(body, &res)
 	if err != nil {
-		log.Fatal("Error while formating json: ", err)
+		utils.HandleServerError(err)
 	}
 
 	return res

@@ -3,7 +3,6 @@ package commands
 import (
 	"cutiecat6778/discordbot/class"
 	"cutiecat6778/discordbot/utils"
-	"log"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -111,7 +110,7 @@ func Map(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
 		err := s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("The zoom values can only be from 1-19!", nil, nil))
 
 		if err != nil {
-			log.Fatal(err)
+			utils.HandleClientError(s, i, err, "map")
 		}
 		return
 	}
@@ -128,6 +127,6 @@ func Map(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
 	})
 
 	if err != nil {
-		log.Fatal(err)
+		utils.HandleClientError(s, i, err, "map")
 	}
 }

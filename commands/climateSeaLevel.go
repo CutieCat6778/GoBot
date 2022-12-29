@@ -111,10 +111,33 @@ func SeaLevel(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guil
 	}
 
 	if margs.Private {
-		err := s.InteractionRespond(i.Interaction, utils.SendPrivateEmbed(embed, nil))
-
+		err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+			Type: discordgo.InteractionResponseChannelMessageWithSource,
+			Data: &discordgo.InteractionResponseData{
+				Flags:  discordgo.MessageFlagsEphemeral,
+				Embeds: embed,
+				Components: []discordgo.MessageComponent{
+					discordgo.ActionsRow{
+						Components: []discordgo.MessageComponent{
+							discordgo.Button{
+								Label:    "←",
+								Style:    discordgo.PrimaryButton,
+								Disabled: true,
+								CustomID: "sealevel_left0",
+							},
+							discordgo.Button{
+								Label:    "→",
+								Style:    discordgo.PrimaryButton,
+								Disabled: false,
+								CustomID: "sealevel_right0",
+							},
+						},
+					},
+				},
+			},
+		})
 		if err != nil {
-			log.Fatal(err)
+			utils.HandleClientError(s, i, err, "sealevel")
 		}
 	} else {
 		err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
@@ -143,7 +166,7 @@ func SeaLevel(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guil
 		})
 
 		if err != nil {
-			log.Fatal(err)
+			utils.HandleClientError(s, i, err, "sealevel")
 		}
 	}
 }

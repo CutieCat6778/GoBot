@@ -2,6 +2,8 @@ package components
 
 import (
 	"cutiecat6778/discordbot/commands"
+	"cutiecat6778/discordbot/utils"
+	"errors"
 	"fmt"
 	"log"
 	"strconv"
@@ -13,13 +15,8 @@ import (
 func Move(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	user, found := commands.SeaLevelScroll.Get(i.Member.User.ID)
 	if !found {
-		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-			Type: discordgo.InteractionResponseUpdateMessage,
-			Data: &discordgo.InteractionResponseData{
-				Content: "Error, please try again!",
-				Flags:   discordgo.MessageFlagsEphemeral,
-			},
-		})
+		utils.HandleClientError(s, i, errors.New("failed to get user scroll data"), "sealevel")
+		return
 	}
 
 	position := i.MessageComponentData().CustomID
@@ -86,7 +83,7 @@ func Move(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		},
 	})
 	if err != nil {
-		panic(err)
+		utils.HandleClientError(s, i, err, "sealevel")
 	}
 }
 

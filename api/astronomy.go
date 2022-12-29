@@ -2,10 +2,10 @@ package api
 
 import (
 	"cutiecat6778/discordbot/class"
+	"cutiecat6778/discordbot/utils"
 	"encoding/json"
 	"image"
 	"io"
-	"log"
 	"net/http"
 )
 
@@ -33,12 +33,12 @@ func NewAstronomy() Astronomy {
 func (handler Astronomy) APOD() APOD {
 	resp, err := handler.HttpClient.Get(APODURL)
 	if err != nil {
-		log.Fatal("Failed to fetch: ", err)
+		utils.HandleServerError(err)
 	}
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal("Failed to read: ", err)
+		utils.HandleServerError(err)
 	}
 
 	defer resp.Body.Close()
@@ -47,7 +47,7 @@ func (handler Astronomy) APOD() APOD {
 
 	err = json.Unmarshal(body, &res)
 	if err != nil {
-		log.Fatal("Error while formating json: ", err)
+		utils.HandleServerError(err)
 	}
 
 	return res
@@ -56,13 +56,13 @@ func (handler Astronomy) APOD() APOD {
 func (handler Astronomy) GetImageSize(url string) (int, int) {
 	resp, err := handler.HttpClient.Get(url)
 	if err != nil {
-		log.Fatal(err)
+		utils.HandleServerError(err)
 	}
 	defer resp.Body.Close()
 
 	m, _, err := image.Decode(resp.Body)
 	if err != nil {
-		log.Fatal(err)
+		utils.HandleServerError(err)
 	}
 	g := m.Bounds()
 
