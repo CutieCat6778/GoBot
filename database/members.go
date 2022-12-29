@@ -75,7 +75,7 @@ func UpdateMember(id string, update *class.Members) bool {
 
 func RefreshToken(id string) bool {
 	filter := bson.D{{Key: "member_id", Value: id}}
-	current_time := time.Now().Unix()
+	currentTime := time.Now().Unix()
 
 	m, f := FindUserByMemberID(id)
 	if !f {
@@ -85,7 +85,7 @@ func RefreshToken(id string) bool {
 
 	utils.HandleDebugMessage("Refreshing ", id, m.MemberID)
 
-	update := bson.D{{Key: "$set", Value: bson.D{{Key: "tokens", Value: 19}, {Key: "last_refreshed", Value: current_time}}}}
+	update := bson.D{{Key: "$set", Value: bson.D{{Key: "tokens", Value: 19}, {Key: "last_refreshed", Value: currentTime}}}}
 
 	_, err := Members.UpdateOne(context.TODO(), filter, update)
 	if err != nil {
@@ -99,7 +99,7 @@ func RefreshToken(id string) bool {
 
 func RemoveToken(id string) (class.Members, bool) {
 	filter := bson.D{{Key: "member_id", Value: id}}
-	current_time := time.Now().Unix()
+	currentTime := time.Now().Unix()
 
 	m, f := FindUserByMemberID(id)
 	if !f {
@@ -110,13 +110,13 @@ func RemoveToken(id string) (class.Members, bool) {
 
 	interval := int64(1000 * 60 * 60 * 6)
 
-	if m.Tokens == 0 && current_time-m.LastRefreshed >= interval {
+	if m.Tokens == 0 && currentTime-m.LastRefreshed >= interval {
 		refresh := RefreshToken(id)
 		if !refresh {
 			return m, false
 		}
 		return m, true
-	} else if m.Tokens == 0 && current_time-m.LastRefreshed < interval {
+	} else if m.Tokens == 0 && currentTime-m.LastRefreshed < interval {
 		return m, false
 	}
 
