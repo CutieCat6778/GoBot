@@ -6,6 +6,7 @@ import (
 	"cutiecat6778/discordbot/database"
 	"cutiecat6778/discordbot/utils"
 	"fmt"
+	"log"
 	"strings"
 	"time"
 
@@ -58,11 +59,11 @@ func InteractionApplicationCommand(s *discordgo.Session, i *discordgo.Interactio
 func InteractionMessageComponent(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	name := i.MessageComponentData().CustomID
 
-	if strings.HasPrefix(name, "sealevel_right") {
-		name = name[0:14]
-	} else if strings.HasPrefix(name, "sealevel_left") {
-		name = name[0:13]
+	if strings.HasPrefix(name, "sealevel") {
+		name = name[0:8]
 	}
+
+	log.Println(name)
 
 	if h, ok := components.ComponentsHandlers[name]; ok {
 		h(s, i)

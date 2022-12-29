@@ -43,7 +43,7 @@ func main() {
 
 	registeredCommands := make([]*discordgo.ApplicationCommand, len(slashCommands))
 	for i, v := range slashCommands {
-		cmd, err := s.ApplicationCommandCreate(s.State.User.ID, "", v)
+		cmd, err := s.ApplicationCommandCreate(s.State.User.ID, class.ServerID, v)
 		if err != nil {
 			utils.SendErrorMessage("Error while resgistering commands! ", err.Error())
 			log.Fatal("Error while registering commands: ", err)
@@ -62,7 +62,7 @@ func main() {
 	if *class.RemoveCommands {
 		log.Println("Removing commands...")
 		for _, v := range registeredCommands {
-			err := s.ApplicationCommandDelete(s.State.User.ID, "", v.ID)
+			err := s.ApplicationCommandDelete(s.State.User.ID, class.ServerID, v.ID)
 			if err != nil {
 				utils.SendErrorMessage("Failed to delete commands ", err.Error())
 				log.Panicf("Cannot delete '%v' command: %v", v.Name, err)

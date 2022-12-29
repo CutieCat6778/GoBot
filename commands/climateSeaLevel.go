@@ -167,7 +167,6 @@ func SeaLevel(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guil
 }
 
 func URLResolver(location string, num int64) string {
-
 	switch location {
 	case "s-usa":
 		return fmt.Sprintf("https://cdn.thinh.tech/seaLevel/seaLevel6_US_%v.jpeg", num)

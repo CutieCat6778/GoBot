@@ -10,7 +10,6 @@ var (
 
 func init() {
 	ComponentsHandlers = map[string]func(s *discordgo.Session, i *discordgo.InteractionCreate){
-		"sealevel_left":  GoLeft,
-		"sealevel_right": GoRight,
+		"sealevel": Move,
 	}
 }
