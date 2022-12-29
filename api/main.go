@@ -2,19 +2,19 @@ package api
 
 import (
 	"bytes"
-	"fmt"
+	"cutiecat6778/discordbot/utils"
 	"image"
 	"image/png"
 )
 
-func ConvertImageToBuffer(new_image image.Image) *bytes.Reader {
+func ConvertImageToBuffer(newImage image.Image) *bytes.Reader {
 	// create buffer
 	buff := new(bytes.Buffer)
 
 	// encode image to buffer
-	err := png.Encode(buff, new_image)
+	err := png.Encode(buff, newImage)
 	if err != nil {
-		fmt.Println("failed to create buffer", err)
+		utils.HandleServerError(err)
 	}
 
 	// convert buffer to reader
