@@ -2,7 +2,6 @@ package commands
 
 import (
 	"cutiecat6778/discordbot/class"
-	"cutiecat6778/discordbot/database"
 	"cutiecat6778/discordbot/utils"
 	"fmt"
 	"log"
@@ -71,22 +70,7 @@ func init() {
 func CurrentWindspeed(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
 	options := i.ApplicationCommandData().Options[0].Options
 
-	m, allow := database.RemoveToken(i.Member.User.ID)
-	if !allow {
-		if len(m.MemberID) < 5 {
-			err := s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("Failed to remove user token!", nil, nil))
-			if err != nil {
-				utils.SendErrorMessage("Problem while trying to send private interaction message: ", err.Error())
-				log.Fatal(err)
-			}
-		} else {
-			err := s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("Your user token is expired, please wait 24h to refresh!", nil, nil))
-			if err != nil {
-				utils.SendErrorMessage("Problem while trying to send private interaction message: ", err.Error())
-				log.Fatal(err)
-			}
-		}
-	}
+	RemoveToken(s, i, i.Member.User.ID)
 
 	optionMap := make(map[string]*discordgo.ApplicationCommandInteractionDataOption, len(options))
 	for _, opt := range options {

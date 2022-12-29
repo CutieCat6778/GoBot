@@ -3,6 +3,9 @@ package commands
 import (
 	"cutiecat6778/discordbot/api"
 	"cutiecat6778/discordbot/class"
+	"cutiecat6778/discordbot/database"
+	"cutiecat6778/discordbot/utils"
+	"log"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -45,4 +48,28 @@ func SlashCommands() []*discordgo.ApplicationCommand {
 
 func SlashHandlers() map[string]Command {
 	return commandHandlers
+}
+
+func RemoveToken(s *discordgo.Session, i *discordgo.InteractionCreate, id string) bool {
+	m, allow := database.RemoveToken(i.Member.User.ID)
+
+	log.Println(m.MemberID, m.Tokens, allow)
+
+	if !allow {
+		if len(m.MemberID) < 5 {
+			err := s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("Error while trying to run this command, please contact support!", nil, nil))
+			if err != nil {
+				log.Println(err)
+			}
+			return false
+		} else {
+			err := s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("You don't have any token to use this command. Please wait 6h to retry!", nil, nil))
+			if err != nil {
+				log.Println(err)
+			}
+			return false
+		}
+	}
+
+	return allow
 }

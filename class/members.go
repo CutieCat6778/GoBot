@@ -11,7 +11,7 @@ type Members struct {
 
 func NewMember(id string) Members {
 	now := time.Now().Unix()
-	member := Members{id, now, 10, now}
+	member := Members{id, now, 20, now}
 
 	return member
 }
