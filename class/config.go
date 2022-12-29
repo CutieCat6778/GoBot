@@ -28,8 +28,8 @@ type CommandData struct {
 }
 
 func init() {
-	// TOKEN := "MTA1NTU1MzM1Mzc1NDYyODE5Nw.GbYWaN.lIF0mq9BYSDR4rSUSD8iwd3kR5YyC_6hHrN3qk"
-	TOKEN := "MTA1NzY0NjA1OTk2MDE2MDI4Ng.G1qp-u.orbBv-9teDg-Aqg4-MVx9JKx8uNcki3wpHaFLM"
+	TOKEN := "MTA1NTU1MzM1Mzc1NDYyODE5Nw.GbYWaN.lIF0mq9BYSDR4rSUSD8iwd3kR5YyC_6hHrN3qk"
+	// TOKEN := "MTA1NzY0NjA1OTk2MDE2MDI4Ng.G1qp-u.orbBv-9teDg-Aqg4-MVx9JKx8uNcki3wpHaFLM"
 	DBKEY := "mongodb+srv://admin:!Txzje2006@cluster0.axkhjad.mongodb.net/?retryWrites=true&w=majority"
 	SERVERID := "1056177394093936760"
 	OWNERID := "924351368897106061"
