@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -17,18 +16,8 @@ func FindUserByMemberID(id string) (class.Members, bool) {
 
 	err := Members.FindOne(context.TODO(), bson.D{{Key: "member_id", Value: id}}).Decode(&result)
 	if err == mongo.ErrNoDocuments {
-		var u class.Members
-		var f bool
 		m := CreateMember(id)
-		if len(m) > 0 {
-			u, f = FindUserByID(m)
-			if !f {
-				utils.HandleServerError(errors.New("failed to find user with id" + m))
-			}
-		} else {
-			utils.HandleServerError(errors.New("failed to find user with id" + m))
-		}
-		return class.Members{MemberID: u.MemberID, CreatedAt: u.CreatedAt, Tokens: u.Tokens, LastRefreshed: u.LastRefreshed}, true
+		return class.Members{MemberID: m.MemberID, CreatedAt: m.CreatedAt, Tokens: m.Tokens, LastRefreshed: m.LastRefreshed}, true
 	}
 	if err != nil {
 		utils.HandleServerError(err)
@@ -51,15 +40,15 @@ func FindUserByID(id string) (class.Members, bool) {
 	return class.Members{MemberID: result.MemberID, CreatedAt: result.CreatedAt, Tokens: result.Tokens, LastRefreshed: result.LastRefreshed}, true
 }
 
-func CreateMember(id string) string {
+func CreateMember(id string) class.Members {
 	guild := class.NewMember(id)
 
-	res, err := Members.InsertOne(context.TODO(), guild)
+	_, err := Members.InsertOne(context.TODO(), guild)
 	if err != nil {
 		utils.HandleServerError(err)
 	}
 
-	return res.InsertedID.(primitive.ObjectID).String()
+	return guild
 }
 
 func UpdateMember(id string, update *class.Members) bool {
