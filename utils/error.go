@@ -17,9 +17,11 @@ var (
 )
 
 func HandleClientError(s *discordgo.Session, i *discordgo.InteractionCreate, err error, name string) {
-	SendErrorMessage("[Client] [Error] ", err.Error())
+	SendErrorMessage("<@"+class.OwnerID+">", err.Error())
 	Error.Println(err)
-	CommandBlock.Register(name, true)
+	if len(name) > 0 {
+		CommandBlock.Register(name, true)
+	}
 
 	embed := []*discordgo.MessageEmbed{
 		{
@@ -67,7 +69,7 @@ func HandleClientBlock(s *discordgo.Session, i *discordgo.InteractionCreate) {
 }
 
 func HandleServerError(err error) {
-	SendErrorMessage("[Server] [Error]", err.Error())
+	SendErrorMessage("<@"+class.OwnerID+">", err.Error())
 	Error.Fatal(err)
 }
 

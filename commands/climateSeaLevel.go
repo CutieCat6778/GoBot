@@ -129,6 +129,11 @@ func SeaLevel(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guil
 								Disabled: false,
 								CustomID: "sealevel_right0",
 							},
+							discordgo.Button{
+								Label:    "Problem?",
+								Style:    discordgo.SecondaryButton,
+								CustomID: "error",
+							},
 						},
 					},
 				},
@@ -156,6 +161,11 @@ func SeaLevel(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guil
 								Style:    discordgo.PrimaryButton,
 								Disabled: false,
 								CustomID: "sealevel_right0",
+							},
+							discordgo.Button{
+								Label:    "Problem?",
+								Style:    discordgo.SecondaryButton,
+								CustomID: "error",
 							},
 						},
 					},

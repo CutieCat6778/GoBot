@@ -68,6 +68,11 @@ func Move(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			Disabled: right,
 			CustomID: "sealevel_right" + fmt.Sprintf("%v", num),
 		},
+		discordgo.Button{
+			Label:    "Problem?",
+			Style:    discordgo.SecondaryButton,
+			CustomID: "error",
+		},
 	}
 
 	err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{

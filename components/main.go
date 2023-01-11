@@ -11,5 +11,6 @@ var (
 func init() {
 	ComponentsHandlers = map[string]func(s *discordgo.Session, i *discordgo.InteractionCreate){
 		"sealevel": Move,
+		"error":    Error,
 	}
 }

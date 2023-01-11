@@ -9,6 +9,17 @@ func SendInteractionMessage(c string, e []*discordgo.MessageEmbed, m *discordgo.
 			Content:         c,
 			Embeds:          e,
 			AllowedMentions: m,
+			Components: []discordgo.MessageComponent{
+				discordgo.ActionsRow{
+					Components: []discordgo.MessageComponent{
+						discordgo.Button{
+							Label:    "Problem?",
+							Style:    discordgo.SecondaryButton,
+							CustomID: "error",
+						},
+					},
+				},
+			},
 		},
 	}
 }
@@ -21,6 +32,17 @@ func SendPrivateInteractionMessage(c string, e []*discordgo.MessageEmbed, m *dis
 			Embeds:          e,
 			Flags:           discordgo.MessageFlagsEphemeral,
 			AllowedMentions: m,
+			Components: []discordgo.MessageComponent{
+				discordgo.ActionsRow{
+					Components: []discordgo.MessageComponent{
+						discordgo.Button{
+							Label:    "Problem?",
+							Style:    discordgo.SecondaryButton,
+							CustomID: "error",
+						},
+					},
+				},
+			},
 		},
 	}
 }
@@ -32,6 +54,17 @@ func SendPrivateEmbed(e []*discordgo.MessageEmbed, m *discordgo.MessageAllowedMe
 			Embeds:          e,
 			Flags:           discordgo.MessageFlagsEphemeral,
 			AllowedMentions: m,
+			Components: []discordgo.MessageComponent{
+				discordgo.ActionsRow{
+					Components: []discordgo.MessageComponent{
+						discordgo.Button{
+							Label:    "Problem?",
+							Style:    discordgo.SecondaryButton,
+							CustomID: "error",
+						},
+					},
+				},
+			},
 		},
 	}
 }
@@ -42,6 +75,17 @@ func SendEmbed(e []*discordgo.MessageEmbed, m *discordgo.MessageAllowedMentions)
 		Data: &discordgo.InteractionResponseData{
 			Embeds:          e,
 			AllowedMentions: m,
+			Components: []discordgo.MessageComponent{
+				discordgo.ActionsRow{
+					Components: []discordgo.MessageComponent{
+						discordgo.Button{
+							Label:    "Problem?",
+							Style:    discordgo.SecondaryButton,
+							CustomID: "error",
+						},
+					},
+				},
+			},
 		},
 	}
 }

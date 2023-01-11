@@ -3,7 +3,6 @@ package commands
 import (
 	"cutiecat6778/discordbot/class"
 	"cutiecat6778/discordbot/utils"
-
 	"github.com/bwmarrin/discordgo"
 )
 
@@ -29,5 +28,8 @@ func init() {
 }
 
 func Ping(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
-	s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("Pong!", nil, nil))
+	err := s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("Pong!", nil, nil))
+	if err != nil {
+		utils.HandleClientError(s, i, err, "ping")
+	}
 }

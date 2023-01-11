@@ -4,6 +4,7 @@ import (
 	"cutiecat6778/discordbot/commands"
 	"cutiecat6778/discordbot/components"
 	"cutiecat6778/discordbot/database"
+	"cutiecat6778/discordbot/modal"
 	"cutiecat6778/discordbot/utils"
 	"fmt"
 	"strings"
@@ -18,6 +19,8 @@ func InteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		InteractionApplicationCommand(s, i)
 	case discordgo.InteractionMessageComponent:
 		InteractionMessageComponent(s, i)
+	case discordgo.InteractionModalSubmit:
+		modal.ErrorHandler(s, i)
 	}
 }
 
