@@ -123,6 +123,17 @@ func Map(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
 			Files: []*discordgo.File{
 				{Name: "image.png", Reader: reader},
 			},
+			Components: []discordgo.MessageComponent{
+				discordgo.ActionsRow{
+					Components: []discordgo.MessageComponent{
+						discordgo.Button{
+							Label:    "Problem?",
+							Style:    discordgo.SecondaryButton,
+							CustomID: "error",
+						},
+					},
+				},
+			},
 		},
 	})
 
