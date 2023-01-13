@@ -37,11 +37,19 @@ func main() {
 
 	utils.HandleDebugMessage("Registering commands")
 
+	var register string
+
+	if class.LOCAL {
+		register = class.ServerID
+	} else {
+		register = ""
+	}
+
 	slashCommands := commands.SlashCommands()
 
 	registeredCommands := make([]*discordgo.ApplicationCommand, len(slashCommands))
 	for i, v := range slashCommands {
-		cmd, err := s.ApplicationCommandCreate(s.State.User.ID, "", v)
+		cmd, err := s.ApplicationCommandCreate(s.State.User.ID, register, v)
 		if err != nil {
 			utils.HandleServerError(err)
 		}
@@ -59,7 +67,7 @@ func main() {
 	if *class.RemoveCommands {
 		utils.HandleDebugMessage("Removing commands...")
 		for _, v := range registeredCommands {
-			err := s.ApplicationCommandDelete(s.State.User.ID, "", v.ID)
+			err := s.ApplicationCommandDelete(s.State.User.ID, register, v.ID)
 			if err != nil {
 				utils.HandleServerError(err)
 			}

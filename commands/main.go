@@ -14,8 +14,12 @@ type Command struct {
 }
 
 var (
-	commands        = []*discordgo.ApplicationCommand{&PingApplicationData, &MapApplicationData, &WeatherApplicationData, &AstronomyApplicationData, &ClimateApplicationData}
+	commands        = []*discordgo.ApplicationCommand{&HelpApplicationData, &PingApplicationData, &MapApplicationData, &WeatherApplicationData, &AstronomyApplicationData, &ClimateApplicationData}
 	commandHandlers = map[string]Command{
+		"help": {
+			Execute: Help,
+			Data:    HelpCommandData,
+		},
 		"ping": {
 			Execute: Ping,
 			Data:    PingCommandData,
