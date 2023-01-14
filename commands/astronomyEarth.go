@@ -200,7 +200,7 @@ func Earth(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds)
 	}
 	if trigger {
 		time.Sleep(time.Second)
-		_, err := s.FollowupMessageCreate(i.Interaction, true, &discordgo.WebhookParams{
+		m, err := s.FollowupMessageCreate(i.Interaction, true, &discordgo.WebhookParams{
 			Content: "There was no image for that day, so I showed you the most recent image!",
 			Flags:   discordgo.MessageFlagsEphemeral,
 			Components: []discordgo.MessageComponent{
@@ -215,6 +215,13 @@ func Earth(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds)
 				},
 			},
 		})
+		if err != nil {
+			utils.HandleClientError(s, i, err, "earth")
+			return
+		}
+
+		time.Sleep(5000)
+		err = s.FollowupMessageDelete(i.Interaction, m.ID)
 		if err != nil {
 			utils.HandleClientError(s, i, err, "earth")
 			return
