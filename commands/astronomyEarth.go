@@ -220,7 +220,7 @@ func Earth(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds)
 			return
 		}
 
-		time.Sleep(5000)
+		time.Sleep(time.Second * 10)
 		err = s.FollowupMessageDelete(i.Interaction, m.ID)
 		if err != nil {
 			utils.HandleClientError(s, i, err, "earth")
