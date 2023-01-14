@@ -74,6 +74,8 @@ func Earth(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds)
 		optionMap[opt.Name] = opt
 	}
 
+	RemoveToken(s, i, i.Member.User.ID)
+
 	margs := EarthOption{}
 	if option, ok := optionMap["year"]; ok {
 		margs.Year = option.StringValue()
