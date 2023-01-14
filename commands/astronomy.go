@@ -11,7 +11,7 @@ var (
 	AstronomyApplicationData = discordgo.ApplicationCommand{
 		Name:        "astronomy",
 		Description: "A command group for astronomy commands",
-		Options:     []*discordgo.ApplicationCommandOption{&APODApplicationData},
+		Options:     []*discordgo.ApplicationCommandOption{&APODApplicationData, &EarthApplicationData},
 	}
 	AstronomyClass             api.Astronomy
 	AstronomyCommandData       class.CommandData
@@ -32,11 +32,16 @@ func init() {
 	}
 	AstronomySubCommandData = map[string]class.CommandData{
 		"today": APODCommandData,
+		"earth": EarthCommandData,
 	}
 	AstronomySubCommandHandler = map[string]Command{
 		"today": {
 			Execute: APOD,
 			Data:    APODCommandData,
+		},
+		"earth": {
+			Execute: Earth,
+			Data:    EarthCommandData,
 		},
 	}
 }

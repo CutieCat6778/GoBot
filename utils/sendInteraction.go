@@ -89,3 +89,23 @@ func SendEmbed(e []*discordgo.MessageEmbed, m *discordgo.MessageAllowedMentions)
 		},
 	}
 }
+
+func DeferInteraction() *discordgo.InteractionResponse {
+	return &discordgo.InteractionResponse{
+		Type: discordgo.InteractionResponseDeferredChannelMessageWithSource,
+		Data: &discordgo.InteractionResponseData{
+			Content: "Loading...",
+			Components: []discordgo.MessageComponent{
+				discordgo.ActionsRow{
+					Components: []discordgo.MessageComponent{
+						discordgo.Button{
+							Label:    "Problem?",
+							Style:    discordgo.SecondaryButton,
+							CustomID: "error",
+						},
+					},
+				},
+			},
+		},
+	}
+}

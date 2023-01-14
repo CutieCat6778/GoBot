@@ -4,6 +4,7 @@ import (
 	"cutiecat6778/discordbot/class"
 	"log"
 	"os"
+	"runtime"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -17,6 +18,10 @@ var (
 )
 
 func HandleClientError(s *discordgo.Session, i *discordgo.InteractionCreate, err error, name string) {
+	_, file, no, ok := runtime.Caller(1)
+	if ok {
+		log.Printf("called from %s#%d\n", file, no)
+	}
 	SendErrorMessage("<@"+class.OwnerID+">", err.Error())
 	Error.Println(err)
 	if len(name) > 0 {
@@ -46,6 +51,10 @@ func HandleClientError(s *discordgo.Session, i *discordgo.InteractionCreate, err
 }
 
 func HandleClientBlock(s *discordgo.Session, i *discordgo.InteractionCreate) {
+	_, file, no, ok := runtime.Caller(1)
+	if ok {
+		log.Printf("called from %s#%d\n", file, no)
+	}
 	embed := []*discordgo.MessageEmbed{
 		{
 			Color:       0xf2c56b,
@@ -70,17 +79,33 @@ func HandleClientBlock(s *discordgo.Session, i *discordgo.InteractionCreate) {
 
 func HandleServerError(err error) {
 	SendErrorMessage("<@"+class.OwnerID+">", err.Error())
-	Error.Fatal(err)
+	_, file, no, ok := runtime.Caller(1)
+	if ok {
+		log.Printf("called from %s#%d\n", file, no)
+	}
+	Error.Println(err)
 }
 
 func HandleInfoMessage(msg ...any) {
+	_, file, no, ok := runtime.Caller(1)
+	if ok {
+		log.Printf("called from %s#%d\n", file, no)
+	}
 	Info.Println(msg)
 }
 
 func HandleDebugMessage(msg ...any) {
+	_, file, no, ok := runtime.Caller(1)
+	if ok {
+		log.Printf("called from %s#%d\n", file, no)
+	}
 	Debug.Println(msg)
 }
 
 func HandleWarningMessage(msg ...any) {
+	_, file, no, ok := runtime.Caller(1)
+	if ok {
+		log.Printf("called from %s#%d\n", file, no)
+	}
 	Warning.Println(msg)
 }

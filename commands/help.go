@@ -213,6 +213,7 @@ func Help(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) 
 			"current":          CurrentWeatherCommandData,
 			"temperatur":       CurrentTemperaturCommandData,
 			"windspeed":        CurrentTemperaturCommandData,
+			"earth":            EarthCommandData,
 		}
 		commandData := slashCommands[margs.SubCommand]
 		slashSubCommands := []*discordgo.ApplicationCommandOption{
@@ -224,6 +225,7 @@ func Help(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) 
 			&SeaLevelApplicationData,
 			&GlobalTempApplicationData,
 			&CO2ApplicationData,
+			&EarthApplicationData,
 		}
 		slashData, f := findSubSlashData(slashSubCommands, margs.SubCommand)
 		if !f {
