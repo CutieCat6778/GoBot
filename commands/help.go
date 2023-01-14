@@ -65,6 +65,10 @@ func init() {
 						Value: "today",
 					},
 					{
+						Name:  "astronomy earth",
+						Value: "earth",
+					},
+					{
 						Name:  "climate co2airs",
 						Value: "co2airs",
 					},
