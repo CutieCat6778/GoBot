@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"math"
 	"time"
 )
 
@@ -65,10 +66,17 @@ func Me(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
 		margs.Private = option.BoolValue()
 	}
 
+	cur := (time.Now().Unix() - m.LastRefreshed)
+	sixh := int64(1000 * 60 * 60 * 6)
+	period := sixh - cur
+	if period < 0 {
+		period = 0
+	}
+
 	embed := []*discordgo.MessageEmbed{
 		{
 			Title:       CapitalizeTitle(i.Member.User.Username),
-			Description: fmt.Sprintf("**Joined GeoBot at** \n - %v\n**Current token** \n - %v\n**Tokens can be renew in** \n - %v minutes\n", time.Unix(m.CreatedAt, 0).Format("2006-01-02 15:02"), m.Tokens, (time.Now().Unix()-m.LastRefreshed)/1000),
+			Description: fmt.Sprintf("**Joined GeoBot at** \n - %v\n**Current token** \n - %v\n**Tokens can be renew in** \n - %v hours\n", time.Unix(m.CreatedAt, 0).Format("2006-01-02 15:02"), m.Tokens, math.Round(float64(period/360000))/10),
 			Footer: &discordgo.MessageEmbedFooter{
 				Text:    fmt.Sprintf("Request by %v", i.Member.User.Username),
 				IconURL: i.Member.User.AvatarURL(""),
