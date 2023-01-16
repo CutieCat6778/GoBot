@@ -24,5 +24,7 @@ ENV APP_NAME geobot
 # Copy only required data into this image
 COPY --from=build-env /$APP_NAME .
 
+EXPOSE 3000
+
 # Start app
 CMD ./$APP_NAME

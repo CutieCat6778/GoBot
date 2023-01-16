@@ -32,7 +32,7 @@ func NewDBL() DBL {
 		fmt.Fprintf(w, "Welcome to new server!")
 	})
 
-	log.Println(http.ListenAndServe(":5000", nil))
+	log.Println(http.ListenAndServe(":3000", nil))
 	log.Println("Serving dbl")
 
 	return DBL{
