@@ -19,6 +19,8 @@ var (
 	BINGKey        string
 	WeatherKey     string
 	NasaKey        string
+	DBLKey         string
+	BotID          string
 	RemoveCommands = flag.Bool("rmcmd", true, "Remove all commands after shutdowning or not")
 )
 
@@ -37,6 +39,7 @@ func init() {
 	} else {
 		TOKEN = "MTA1NzY0NjA1OTk2MDE2MDI4Ng.G1qp-u.orbBv-9teDg-Aqg4-MVx9JKx8uNcki3wpHaFLM"
 	}
+	DBLTOKEN := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwNTU1NTMzNTM3NTQ2MjgxOTciLCJib3QiOnRydWUsImlhdCI6MTY3Mzg5NzkyMH0.YFmtd2FjaBpv1P2_M0tdg9U8mu4IGxuLK1yezG1ztGg"
 	DBKEY := "mongodb+srv://admin:!Txzje2006@cluster0.axkhjad.mongodb.net/?retryWrites=true&w=majority"
 	SERVERID := "1056177394093936760"
 	OWNERID := "924351368897106061"
@@ -49,6 +52,7 @@ func init() {
 	GGAPITOKEN := "AIzaSyDNiNV1ujFuKNCir17Oev7bhDQZgF7givw"
 	BINGTOKEN := "Ahz6TU3QuNiBo8gYTTEzJpbTsZpg4TbsOkMcmsTpg6QpopqrS99Qp3BCImIzLFR7"
 	NASATOKEN := "lgVZOMJlINVlio85EHjb3Z14BkbJlcwgcmKprZQS"
+	BOTID := "1055553353754628197"
 
 	token := TOKEN
 	serverID := SERVERID
@@ -71,6 +75,8 @@ func init() {
 	flag.StringVar(&BINGKey, "ba", bingApi, "")
 	flag.StringVar(&WeatherKey, "wa", "e5bafc3618ad164189d42eece89d6bc2", "")
 	flag.StringVar(&NasaKey, "na", NASATOKEN, "")
+	flag.StringVar(&DBLKey, "dbl", DBLTOKEN, "")
+	flag.StringVar(&BotID, "bi", BOTID, "")
 
 	flag.Parse()
 
