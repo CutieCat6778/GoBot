@@ -96,7 +96,7 @@ func UserVoted(id string) bool {
 		return false
 	}
 
-	utils.HandleDebugMessage("Refreshing ", id, m.MemberID)
+	utils.HandleDebugMessage("User voted, refreshing ", id, m.MemberID)
 
 	update := bson.D{{Key: "$set", Value: bson.D{{Key: "tokens", Value: m.Tokens + 20}, {Key: "last_refreshed", Value: currentTime}}}}
 
