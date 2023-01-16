@@ -52,6 +52,10 @@ func init() {
 						Name:  "ping",
 						Value: "ping",
 					},
+					{
+						Name:  "aboutme",
+						Value: "aboutme",
+					},
 				},
 			},
 			{
@@ -173,6 +177,9 @@ func Help(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) 
 			},
 			"climate": {
 				Data: ClimateCommandData,
+			},
+			"aboutme": {
+				Data: MeCommandData,
 			},
 		}
 		commandData := slashCommands[margs.Command]

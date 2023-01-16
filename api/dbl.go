@@ -3,6 +3,7 @@ package api
 import (
 	"bytes"
 	"cutiecat6778/discordbot/class"
+	"cutiecat6778/discordbot/database"
 	"cutiecat6778/discordbot/utils"
 	"encoding/json"
 	"fmt"
@@ -67,7 +68,6 @@ type WebhookResp struct {
 }
 
 func WebhookHandler(w http.ResponseWriter, r *http.Request) {
-	log.Println("Received a request")
 	if r.Method != "POST" || r.Header.Get("authorization") != "thinyisgood" {
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -79,5 +79,6 @@ func WebhookHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		utils.HandleServerError(err)
 	}
-	log.Println(t.Bot)
+
+	database.UserVoted(t.User)
 }

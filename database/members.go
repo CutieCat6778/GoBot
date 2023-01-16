@@ -86,6 +86,30 @@ func RefreshToken(id string) bool {
 	return true
 }
 
+func UserVoted(id string) bool {
+	filter := bson.D{{Key: "member_id", Value: id}}
+	currentTime := time.Now().Unix()
+
+	m, f := FindUserByMemberID(id)
+	if !f {
+		utils.HandleServerError(errors.New("unable to find user " + id))
+		return false
+	}
+
+	utils.HandleDebugMessage("Refreshing ", id, m.MemberID)
+
+	update := bson.D{{Key: "$set", Value: bson.D{{Key: "tokens", Value: m.Tokens + 20}, {Key: "last_refreshed", Value: currentTime}}}}
+
+	_, err := Members.UpdateOne(context.TODO(), filter, update)
+	if err != nil {
+		utils.HandleServerError(err)
+	}
+
+	utils.HandleDebugMessage("Refreshed ", id)
+
+	return true
+}
+
 func RemoveToken(id string) (class.Members, bool) {
 	filter := bson.D{{Key: "member_id", Value: id}}
 	currentTime := time.Now().Unix()

@@ -32,7 +32,7 @@ type CommandData struct {
 }
 
 func init() {
-	LOCAL = false
+	LOCAL = true
 	var TOKEN string
 	if !LOCAL {
 		TOKEN = "MTA1NTU1MzM1Mzc1NDYyODE5Nw.GbYWaN.lIF0mq9BYSDR4rSUSD8iwd3kR5YyC_6hHrN3qk"
