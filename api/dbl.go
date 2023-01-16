@@ -6,6 +6,7 @@ import (
 	"cutiecat6778/discordbot/database"
 	"cutiecat6778/discordbot/utils"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -80,5 +81,10 @@ func WebhookHandler(w http.ResponseWriter, r *http.Request) {
 		utils.HandleServerError(err)
 	}
 
-	database.UserVoted(t.User)
+	log.Println("User voted ", t.User)
+
+	f := database.UserVoted(t.User)
+	if !f {
+		utils.HandleServerError(errors.New("user failed to update their tokens counts"))
+	}
 }
