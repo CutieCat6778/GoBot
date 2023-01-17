@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 )
@@ -22,13 +23,20 @@ var (
 
 func NewDBL() DBL {
 	client := http.Client{
-		CheckRedirect: func(r *http.Request, via []*http.Request) error {
-			r.URL.Opaque = r.URL.Path
-			r.Header.Add("Authorization", class.DBLKey)
-			return nil
-		},
+		CheckRedirect: redirectPolicyFunc,
 	}
 
+	return DBL{
+		HttpClient: &client,
+	}
+}
+
+func redirectPolicyFunc(req *http.Request, via []*http.Request) error {
+	req.Header.Add("Authorization", class.DBLKey)
+	return nil
+}
+
+func (handler DBL) ListenVotes() {
 	http.HandleFunc("/dbl", WebhookHandler)
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Welcome to new server!")
@@ -37,25 +45,35 @@ func NewDBL() DBL {
 	log.Println(http.ListenAndServe(":3000", nil))
 	log.Println("Serving dbl")
 
-	return DBL{
-		HttpClient: &client,
-	}
 }
 
 func (handler DBL) PostStats(ServerCount int) error {
 
-	reqBody, err := json.Marshal(map[string]string{
-		"server_count": fmt.Sprintf("%v", ServerCount),
+	reqBody, err := json.Marshal(map[string]int{
+		"server_count": ServerCount,
 	})
 	if err != nil {
 		print(err)
 	}
 
-	url := fmt.Sprintf(DBLURL, class.BotID+"/stats")
-	_, err = handler.HttpClient.Post(url, "application/json", bytes.NewBuffer(reqBody))
+	url := fmt.Sprintf("https://top.gg/api/bots/%v/stats", class.BotID)
+	log.Println(url)
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(reqBody))
+	req.Header.Add("Authorization", class.DBLKey)
+	req.Header.Add("Content-Type", "application/json")
+	resp, err := handler.HttpClient.Do(req)
 	if err != nil {
 		return err
 	}
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		utils.HandleServerError(err)
+	}
+
+	resp.Body.Close()
+
+	log.Println(resp.StatusCode, body)
 
 	return nil
 }

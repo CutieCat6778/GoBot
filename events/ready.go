@@ -6,6 +6,8 @@ import (
 	"cutiecat6778/discordbot/utils"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"log"
+	"time"
 )
 
 var (
@@ -19,5 +21,22 @@ func Ready(s *discordgo.Session, r *discordgo.Ready) {
 	s.UpdateListeningStatus("slash commands")
 
 	DBL = api.NewDBL()
+	log.Println("Posted stats ", len(s.State.Guilds))
 	DBL.PostStats(len(s.State.Guilds))
+	DBL.ListenVotes()
+
+	ticker := time.NewTicker(6 * time.Hour)
+	quit := make(chan struct{})
+	go func() {
+		for {
+			select {
+			case <-ticker.C:
+				log.Println("Posted stats ", len(s.State.Guilds))
+				DBL.PostStats(len(s.State.Guilds))
+			case <-quit:
+				ticker.Stop()
+				return
+			}
+		}
+	}()
 }
