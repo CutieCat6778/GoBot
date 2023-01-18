@@ -28,6 +28,8 @@ func main() {
 
 	s.AddHandler(events.InteractionCreate)
 	s.AddHandler(events.Ready)
+	s.AddHandler(events.GuildDelete)
+	s.AddHandler(events.GuildCreate)
 
 	err := s.Open()
 
@@ -64,12 +66,14 @@ func main() {
 
 	s.Close()
 
-	if *class.RemoveCommands {
-		utils.HandleDebugMessage("Removing commands...")
-		for _, v := range registeredCommands {
-			err := s.ApplicationCommandDelete(s.State.User.ID, register, v.ID)
-			if err != nil {
-				utils.HandleServerError(err)
+	if class.LOCAL {
+		if *class.RemoveCommands {
+			utils.HandleDebugMessage("Removing commands...")
+			for _, v := range registeredCommands {
+				err := s.ApplicationCommandDelete(s.State.User.ID, register, v.ID)
+				if err != nil {
+					utils.HandleServerError(err)
+				}
 			}
 		}
 	}

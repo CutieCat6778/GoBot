@@ -36,7 +36,7 @@ func redirectPolicyFunc(req *http.Request, via []*http.Request) error {
 	return nil
 }
 
-func (handler DBL) ListenVotes() {
+func ListenVotes() {
 	http.HandleFunc("/dbl", WebhookHandler)
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Welcome to new server!")
@@ -44,7 +44,6 @@ func (handler DBL) ListenVotes() {
 
 	log.Println(http.ListenAndServe(":3000", nil))
 	log.Println("Serving dbl")
-
 }
 
 func (handler DBL) PostStats(ServerCount int) error {
