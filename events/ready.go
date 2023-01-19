@@ -6,7 +6,6 @@ import (
 	"cutiecat6778/discordbot/utils"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
-	"github.com/robfig/cron/v3"
 	"log"
 )
 
@@ -20,18 +19,13 @@ func Ready(s *discordgo.Session, r *discordgo.Ready) {
 	utils.HandleDebugMessage(fmt.Sprintf("Logged in as: %v#%v", s.State.User.Username, s.State.User.Discriminator))
 	s.UpdateListeningStatus("slash commands")
 
+	if class.LOCAL {
+		return
+	}
+
 	DBL = api.NewDBL()
 	log.Println("Posted stats ", len(s.State.Guilds))
 	DBL.PostStats(len(s.State.Guilds))
-	api.ListenVotes()
 
-	c := cron.New()
-	_, err := c.AddFunc("@hourly", func() {
-		log.Println("Posted stats ", len(s.State.Guilds))
-		DBL.PostStats(len(s.State.Guilds))
-	})
-	if err != nil {
-		utils.HandleServerError(err)
-	}
-	c.Start()
+	api.ListenVotes()
 }

@@ -27,9 +27,9 @@ func main() {
 	s.Identify.Intents = discordgo.IntentGuildMembers
 
 	s.AddHandler(events.InteractionCreate)
-	s.AddHandler(events.Ready)
 	s.AddHandler(events.GuildDelete)
 	s.AddHandler(events.GuildCreate)
+	s.AddHandler(events.Ready)
 
 	err := s.Open()
 
@@ -63,8 +63,6 @@ func main() {
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-sc
-
-	s.Close()
 
 	if class.LOCAL {
 		if *class.RemoveCommands {
