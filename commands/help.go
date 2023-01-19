@@ -56,6 +56,10 @@ func init() {
 						Name:  "aboutme",
 						Value: "aboutme",
 					},
+					{
+						Name:  "vote",
+						Value: "vote",
+					},
 				},
 			},
 			{
@@ -180,6 +184,9 @@ func Help(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) 
 			},
 			"aboutme": {
 				Data: MeCommandData,
+			},
+			"vote": {
+				Data: VoteCommandData,
 			},
 		}
 		commandData := slashCommands[margs.Command]
