@@ -66,7 +66,7 @@ func Me(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
 		margs.Private = option.BoolValue()
 	}
 
-	cur := (time.Now().Unix() - m.LastRefreshed)
+	cur := time.Now().Unix() - m.LastRefreshed
 	sixh := int64(1000 * 60 * 60 * 6)
 	period := sixh - cur
 	if period < 0 {

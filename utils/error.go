@@ -44,9 +44,25 @@ func HandleClientError(s *discordgo.Session, i *discordgo.InteractionCreate, err
 	}
 
 	sent := s.InteractionRespond(i.Interaction, SendPrivateEmbed(embed, nil))
-
 	if sent != nil {
-		Error.Println(sent)
+		_, err = s.FollowupMessageCreate(i.Interaction, true, &discordgo.WebhookParams{
+			Embeds: embed,
+			Flags:  discordgo.MessageFlagsEphemeral,
+			Components: []discordgo.MessageComponent{
+				discordgo.ActionsRow{
+					Components: []discordgo.MessageComponent{
+						discordgo.Button{
+							Label:    "Problem?",
+							Style:    discordgo.SecondaryButton,
+							CustomID: "error",
+						},
+					},
+				},
+			},
+		})
+		if err != nil {
+			Error.Println(err)
+		}
 	}
 }
 
