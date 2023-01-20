@@ -60,6 +60,9 @@ func InteractionApplicationCommand(s *discordgo.Session, i *discordgo.Interactio
 
 		if current_time-time >= h.Data.Ratelimit && f {
 
+			utils.Debug.Println("Command: ", name)
+			utils.Debug.Println("Called by: ", i.Member.User.ID)
+
 			// Execute command
 			h.Execute(s, i, g)
 			Ratelimit.Write(i.Member.User.ID)

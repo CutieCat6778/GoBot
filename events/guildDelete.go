@@ -1,12 +1,14 @@
 package events
 
 import (
+	"cutiecat6778/discordbot/class"
 	"github.com/bwmarrin/discordgo"
-	"log"
 )
 
 func GuildDelete(s *discordgo.Session, g *discordgo.GuildCreate) {
-	log.Println("Left ", g.Name, g.ID, g.OwnerID)
+	utils.Debug.Println("Left ", g.Name, g.ID, g.OwnerID)
 
-	DBL.PostStats(len(s.State.Guilds))
+	if !class.Ignore {
+		DBL.PostStats(len(s.State.Guilds))
+	}
 }

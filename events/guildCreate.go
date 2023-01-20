@@ -1,12 +1,14 @@
 package events
 
 import (
+	"cutiecat6778/discordbot/class"
 	"github.com/bwmarrin/discordgo"
-	"log"
 )
 
 func GuildCreate(s *discordgo.Session, g *discordgo.GuildCreate) {
-	log.Println("Joined ", g.Name, g.ID, g.OwnerID)
+	utils.Debug.Println("Joined ", g.Name, g.ID, g.OwnerID)
 
-	DBL.PostStats(len(s.State.Guilds))
+	if !class.Ignore {
+		DBL.PostStats(len(s.State.Guilds))
+	}
 }

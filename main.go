@@ -12,7 +12,10 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-var s *discordgo.Session
+var (
+	s       *discordgo.Session
+	intents discordgo.Intent
+)
 
 func init() {
 	var err error
@@ -20,11 +23,11 @@ func init() {
 	if err != nil {
 		utils.HandleServerError(err)
 	}
+	intents = discordgo.IntentsAllWithoutPrivileged | discordgo.IntentGuilds | discordgo.IntentGuildMembers
 }
 
 func main() {
-	s.Identify.Intents = discordgo.IntentGuilds
-	s.Identify.Intents = discordgo.IntentGuildMembers
+	s.Identify.Intents = discordgo.MakeIntent(intents)
 
 	s.AddHandler(events.InteractionCreate)
 	s.AddHandler(events.GuildDelete)
@@ -37,44 +40,26 @@ func main() {
 		utils.HandleServerError(err)
 	}
 
-	utils.HandleDebugMessage("Registering commands")
-
-	var register string
-
 	if class.LOCAL {
-		register = class.ServerID
-	} else {
-		register = ""
-	}
+		utils.HandleDebugMessage("Registering commands")
 
-	slashCommands := commands.SlashCommands()
+		slashCommands := commands.SlashCommands()
 
-	registeredCommands := make([]*discordgo.ApplicationCommand, len(slashCommands))
-	for i, v := range slashCommands {
-		cmd, err := s.ApplicationCommandCreate(s.State.User.ID, register, v)
-		if err != nil {
-			utils.HandleServerError(err)
+		registeredCommands := make([]*discordgo.ApplicationCommand, len(slashCommands))
+		for i, v := range slashCommands {
+			cmd, err := s.ApplicationCommandCreate(s.State.User.ID, class.ServerID, v)
+			if err != nil {
+				utils.HandleServerError(err)
+			}
+
+			registeredCommands[i] = cmd
 		}
-
-		registeredCommands[i] = cmd
 	}
 
 	utils.HandleDebugMessage("Bot is running right now!")
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-sc
-
-	if class.LOCAL {
-		if *class.RemoveCommands {
-			utils.HandleDebugMessage("Removing commands...")
-			for _, v := range registeredCommands {
-				err := s.ApplicationCommandDelete(s.State.User.ID, register, v.ID)
-				if err != nil {
-					utils.HandleServerError(err)
-				}
-			}
-		}
-	}
 
 	utils.HandleDebugMessage("Gracefully shutting down.")
 }

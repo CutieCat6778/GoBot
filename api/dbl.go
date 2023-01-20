@@ -9,7 +9,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 )
 
@@ -37,8 +36,15 @@ func redirectPolicyFunc(req *http.Request, via []*http.Request) error {
 }
 
 func ListenVotes() {
+	http.HandleFunc("/dbl", WebhookHandler)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Welcome to new server!")
+	})
 
-	log.Println("Serving dbl")
+	class.Ignore = false
+
+	utils.Debug.Println(http.ListenAndServe(":3000", nil))
+	utils.Debug.Println("Serving dbl")
 }
 
 func (handler DBL) PostStats(ServerCount int) error {
@@ -51,7 +57,7 @@ func (handler DBL) PostStats(ServerCount int) error {
 	}
 
 	url := fmt.Sprintf("https://top.gg/api/bots/%v/stats", class.BotID)
-	log.Println(url)
+	utils.Debug.Println(url)
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(reqBody))
 	req.Header.Add("Authorization", class.DBLKey)
 	req.Header.Add("Content-Type", "application/json")
@@ -67,7 +73,7 @@ func (handler DBL) PostStats(ServerCount int) error {
 
 	resp.Body.Close()
 
-	log.Println(resp.StatusCode, body)
+	utils.Debug.Println(resp.StatusCode, body)
 
 	return nil
 }
@@ -93,7 +99,7 @@ func WebhookHandler(w http.ResponseWriter, r *http.Request) {
 		utils.HandleServerError(err)
 	}
 
-	log.Println("User voted ", t.User)
+	utils.Debug.Println("User voted ", t.User)
 
 	f := database.UserVoted(t.User)
 	if !f {

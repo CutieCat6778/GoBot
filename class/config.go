@@ -21,6 +21,7 @@ var (
 	NasaKey        string
 	DBLKey         string
 	BotID          string
+	Ignore         bool
 	RemoveCommands = flag.Bool("rmcmd", true, "Remove all commands after shutdowning or not")
 )
 
@@ -34,6 +35,7 @@ type CommandData struct {
 func init() {
 	LOCAL = false
 	var TOKEN string
+	Ignore = true
 	if !LOCAL {
 		TOKEN = "MTA1NTU1MzM1Mzc1NDYyODE5Nw.GbYWaN.lIF0mq9BYSDR4rSUSD8iwd3kR5YyC_6hHrN3qk"
 	} else {

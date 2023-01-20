@@ -20,7 +20,7 @@ var (
 func HandleClientError(s *discordgo.Session, i *discordgo.InteractionCreate, err error, name string) {
 	_, file, no, ok := runtime.Caller(1)
 	if ok {
-		log.Printf("called from %s#%d\n", file, no)
+		Debug.Printf("called from %s#%d\n", file, no)
 	}
 	SendErrorMessage("<@"+class.OwnerID+">", err.Error())
 	Error.Println(err)
@@ -53,7 +53,7 @@ func HandleClientError(s *discordgo.Session, i *discordgo.InteractionCreate, err
 func HandleClientBlock(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	_, file, no, ok := runtime.Caller(1)
 	if ok {
-		log.Printf("called from %s#%d\n", file, no)
+		Debug.Printf("called from %s#%d\n", file, no)
 	}
 	embed := []*discordgo.MessageEmbed{
 		{
@@ -81,7 +81,7 @@ func HandleServerError(err error) {
 	SendErrorMessage("<@"+class.OwnerID+">", err.Error())
 	_, file, no, ok := runtime.Caller(1)
 	if ok {
-		log.Printf("called from %s#%d\n", file, no)
+		Debug.Printf("called from %s#%d\n", file, no)
 	}
 	Error.Println(err)
 }
@@ -89,7 +89,7 @@ func HandleServerError(err error) {
 func HandleInfoMessage(msg ...any) {
 	_, file, no, ok := runtime.Caller(1)
 	if ok {
-		log.Printf("called from %s#%d\n", file, no)
+		Debug.Printf("called from %s#%d\n", file, no)
 	}
 	Info.Println(msg)
 }
@@ -97,7 +97,7 @@ func HandleInfoMessage(msg ...any) {
 func HandleDebugMessage(msg ...any) {
 	_, file, no, ok := runtime.Caller(1)
 	if ok {
-		log.Printf("called from %s#%d\n", file, no)
+		Debug.Printf("called from %s#%d\n", file, no)
 	}
 	Debug.Println(msg)
 }
@@ -105,7 +105,7 @@ func HandleDebugMessage(msg ...any) {
 func HandleWarningMessage(msg ...any) {
 	_, file, no, ok := runtime.Caller(1)
 	if ok {
-		log.Printf("called from %s#%d\n", file, no)
+		Debug.Printf("called from %s#%d\n", file, no)
 	}
 	Warning.Println(msg)
 }

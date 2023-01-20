@@ -5,7 +5,6 @@ import (
 	"cutiecat6778/discordbot/utils"
 	"errors"
 	"fmt"
-	"log"
 	"strings"
 	"time"
 
@@ -128,7 +127,7 @@ func Earth(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds)
 		date = fmt.Sprintf("%v-%v-%v", margs.Year, margs.Month, margs.Day)
 	}
 
-	log.Println(date)
+	utils.Debug.Println(date)
 
 	data := AstronomyClass.Earth(date)
 	if len(data) == 0 {
@@ -142,7 +141,7 @@ func Earth(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds)
 	url := AstronomyClass.EarthImage(data[0].Date, data[0].Image)
 	height, width := AstronomyClass.GetImageSize(url)
 
-	log.Println(height, width)
+	utils.Debug.Println(height, width)
 
 	res := []*discordgo.MessageEmbed{
 		{
