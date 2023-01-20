@@ -23,7 +23,7 @@ func init() {
 	if err != nil {
 		utils.HandleServerError(err)
 	}
-	intents = discordgo.IntentsAllWithoutPrivileged | discordgo.IntentGuilds | discordgo.IntentGuildMembers
+	intents = discordgo.IntentGuilds | discordgo.IntentGuildMembers
 }
 
 func main() {
