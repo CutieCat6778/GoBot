@@ -80,7 +80,7 @@ func InteractionMessageComponent(s *discordgo.Session, i *discordgo.InteractionC
 		name = name[0:8]
 	}
 
-	utils.HandleDebugMessage(name)
+	utils.Debug.Println(name)
 
 	if h, ok := components.ComponentsHandlers[name]; ok {
 		h(s, i)

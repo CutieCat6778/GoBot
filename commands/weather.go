@@ -3,6 +3,7 @@ package commands
 import (
 	"cutiecat6778/discordbot/api"
 	"cutiecat6778/discordbot/class"
+	"cutiecat6778/discordbot/utils"
 	"fmt"
 
 	"github.com/bwmarrin/discordgo"
@@ -67,6 +68,7 @@ func WeatherFunc(s *discordgo.Session, i *discordgo.InteractionCreate, g class.G
 	options := i.ApplicationCommandData().Options
 
 	if h, ok := WeatherSubCommandHandler[options[0].Name]; ok {
+		utils.Debug.Println("Subcommand: ", options[0].Name)
 		h.Execute(s, i, g)
 	}
 }

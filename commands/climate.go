@@ -2,6 +2,7 @@ package commands
 
 import (
 	"cutiecat6778/discordbot/class"
+	"cutiecat6778/discordbot/utils"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -57,6 +58,7 @@ func ClimateFunc(s *discordgo.Session, i *discordgo.InteractionCreate, g class.G
 	options := i.ApplicationCommandData().Options
 
 	if h, ok := ClimateSubCommandHandler[options[0].Name]; ok {
+		utils.Debug.Println("Subcommand: ", options[0].Name)
 		h.Execute(s, i, g)
 	}
 }
