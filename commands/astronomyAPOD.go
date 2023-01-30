@@ -48,7 +48,10 @@ func APOD(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) 
 		optionMap[opt.Name] = opt
 	}
 
-	RemoveToken(s, i, i.Member.User.ID)
+	allow := RemoveToken(s, i, i.Member.User.ID)
+	if !allow {
+		return
+	}
 
 	margs := APODOption{}
 	if option, ok := optionMap["private"]; ok {

@@ -69,7 +69,10 @@ func init() {
 func CurrentTemperatur(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
 	options := i.ApplicationCommandData().Options[0].Options
 
-	RemoveToken(s, i, i.Member.User.ID)
+	allow := RemoveToken(s, i, i.Member.User.ID)
+	if !allow {
+		return
+	}
 
 	optionMap := make(map[string]*discordgo.ApplicationCommandInteractionDataOption, len(options))
 	for _, opt := range options {
