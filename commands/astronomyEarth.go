@@ -73,7 +73,6 @@ func Earth(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds)
 		optionMap[opt.Name] = opt
 	}
 
-	allow :=
 	allow := RemoveToken(s, i, i.Member.User.ID)
 	if !allow {
 		return
