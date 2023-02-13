@@ -119,6 +119,14 @@ func Map(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
 	}
 
 	reader := MapApi.GetMapImage(margs.Address, margs.Zoom, margs.Type)
+	if reader == nil {
+		err := s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("The address not found! Please try another address", nil, nil))
+
+		if err != nil {
+			utils.HandleClientError(s, i, err, "map")
+		}
+		return
+	}
 
 	err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,

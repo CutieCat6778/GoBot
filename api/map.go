@@ -75,8 +75,17 @@ func (handler Map) GetAddress(query string) BingRes {
 
 func (handler Map) GetMapImage(query string, zoom int64, maptype string) *bytes.Reader {
 
-	res := handler.GetAddress(query)
-	point := res.ResourceSets[0].Resources[0].Point.Coordinates
+	var point = []float64{0.0, 0.0}
 
+	res := handler.GetAddress(query)
+	if len(res.ResourceSets) > 0 {
+		if len(res.ResourceSets[0].Resources) > 0 {
+			point = res.ResourceSets[0].Resources[0].Point.Coordinates
+		}
+	}
+
+	if point[0] == 0.0 || point[0] == 0.0 {
+		return nil
+	}
 	return handler.Get(point[0], point[1], zoom, maptype)
 }
