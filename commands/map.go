@@ -120,7 +120,7 @@ func Map(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds) {
 
 	reader := MapApi.GetMapImage(margs.Address, margs.Zoom, margs.Type)
 	if reader == nil {
-		err := s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("The address not found! Please try another address", nil, nil))
+		err := s.InteractionRespond(i.Interaction, utils.SendPrivateInteractionMessage("The address not found! Please try another address. Example: `Random Street 69, Random Town, Random Country`", nil, nil))
 
 		if err != nil {
 			utils.HandleClientError(s, i, err, "map")
