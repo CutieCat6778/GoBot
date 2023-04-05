@@ -27,9 +27,59 @@ var (
 				Name:        "month",
 				Description: "What month you want earth image to be?",
 				Required:    false,
+				Choices: []*discordgo.ApplicationCommandOptionChoice{
+					{
+						Value: "01",
+						Name:  "January",
+					},
+					{
+						Value: "02",
+						Name:  "February",
+					},
+					{
+						Value: "03",
+						Name:  "March",
+					},
+					{
+						Value: "04",
+						Name:  "April",
+					},
+					{
+						Value: "05",
+						Name:  "May",
+					},
+					{
+						Value: "06",
+						Name:  "June",
+					},
+					{
+						Value: "07",
+						Name:  "July",
+					},
+					{
+						Value: "08",
+						Name:  "August",
+					},
+					{
+						Value: "09",
+						Name:  "September",
+					},
+					{
+						Value: "10",
+						Name:  "October",
+					},
+					{
+						Value: "11",
+						Name:  "November",
+					},
+					{
+						Value: "12",
+						Name:  "December",
+					},
+				},
 			},
 			{
-				Type:        discordgo.ApplicationCommandOptionString,
+				Type:        discordgo.ApplicationCommandOptionInteger,
 				Name:        "day",
 				Description: "What day you want earth image to be?",
 				Required:    false,
