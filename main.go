@@ -40,20 +40,18 @@ func main() {
 		utils.HandleServerError(err)
 	}
 
-	if class.LOCAL {
-		utils.HandleDebugMessage("Registering commands")
+	utils.HandleDebugMessage("Registering commands")
 
-		slashCommands := commands.SlashCommands()
+	slashCommands := commands.SlashCommands()
 
-		registeredCommands := make([]*discordgo.ApplicationCommand, len(slashCommands))
-		for i, v := range slashCommands {
-			cmd, err := s.ApplicationCommandCreate(s.State.User.ID, class.ServerID, v)
-			if err != nil {
-				utils.HandleServerError(err)
-			}
-
-			registeredCommands[i] = cmd
+	registeredCommands := make([]*discordgo.ApplicationCommand, len(slashCommands))
+	for i, v := range slashCommands {
+		cmd, err := s.ApplicationCommandCreate(s.State.User.ID, class.ServerID, v)
+		if err != nil {
+			utils.HandleServerError(err)
 		}
+
+		registeredCommands[i] = cmd
 	}
 
 	utils.HandleDebugMessage("Bot is running right now!")
