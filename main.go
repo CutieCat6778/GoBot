@@ -5,11 +5,10 @@ import (
 	"cutiecat6778/discordbot/commands"
 	"cutiecat6778/discordbot/events"
 	"cutiecat6778/discordbot/utils"
+	"github.com/bwmarrin/discordgo"
+	"log"
 	"os"
 	"os/signal"
-	"syscall"
-
-	"github.com/bwmarrin/discordgo"
 )
 
 var (
@@ -42,22 +41,25 @@ func main() {
 
 	utils.HandleDebugMessage("Registering commands")
 
-	slashCommands := commands.SlashCommands()
+	if class.LOCAL {
+		slashCommands := commands.SlashCommands()
+		registeredCommands := make([]*discordgo.ApplicationCommand, len(slashCommands))
+		for i, v := range slashCommands {
+			cmd, err := s.ApplicationCommandCreate(s.State.User.ID, class.ServerID, v)
+			if err != nil {
+				utils.HandleServerError(err)
+			}
 
-	registeredCommands := make([]*discordgo.ApplicationCommand, len(slashCommands))
-	for i, v := range slashCommands {
-		cmd, err := s.ApplicationCommandCreate(s.State.User.ID, class.ServerID, v)
-		if err != nil {
-			utils.HandleServerError(err)
+			registeredCommands[i] = cmd
 		}
-
-		registeredCommands[i] = cmd
 	}
 
-	utils.HandleDebugMessage("Bot is running right now!")
-	sc := make(chan os.Signal, 1)
-	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
-	<-sc
+	defer s.Close()
+
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt)
+	log.Println("Press Ctrl+C to exit")
+	<-stop
 
 	utils.HandleDebugMessage("Gracefully shutting down.")
 }
