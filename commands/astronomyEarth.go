@@ -136,7 +136,8 @@ func Earth(s *discordgo.Session, i *discordgo.InteractionCreate, g class.Guilds)
 		margs.Month = option.StringValue()
 	}
 	if option, ok := optionMap["day"]; ok {
-		margs.Day = option.StringValue()
+		val := option.IntValue()
+		margs.Day = fmt.Sprintf("%v", val)
 	}
 	if option, ok := optionMap["private"]; ok {
 		margs.Private = option.BoolValue()
